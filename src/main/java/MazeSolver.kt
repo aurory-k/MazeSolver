@@ -1,4 +1,4 @@
-sealed class Cell() {
+sealed class Cell {
     object Free : Cell()
     object Wall : Cell()
     object Start : Cell()
@@ -14,10 +14,15 @@ sealed class Cell() {
     }
 }
 
+
 fun Cell.isFree(): Boolean {
-    return when (this) {
-        Cell.Free -> true
-        else -> false
+    return if (this == null){
+        false
+    } else {
+        when (this) {
+            Cell.Free -> true
+            else -> false
+        }
     }
 }
 
@@ -25,7 +30,7 @@ fun Cell.isNotFree(): Boolean {
     return !isFree()
 }
 
-data class Position(val x: Int, val y: Int)
+data class Position(var x: Int, var y: Int)
 
 class Maze(val staticMaze: Array<Array<out Cell>>) {
 
@@ -39,30 +44,50 @@ class Maze(val staticMaze: Array<Array<out Cell>>) {
 
     companion object {
         val STATIC_MAZE = Maze(arrayOf(
+                arrayOf(Cell.Wall, Cell.Start, Cell.Wall, Cell.Wall),
+                arrayOf(Cell.Wall, Cell.Free, Cell.Free, Cell.End),
                 arrayOf(Cell.Wall, Cell.Free, Cell.Wall, Cell.Wall),
-                arrayOf(Cell.Start, Cell.Free, Cell.Free, Cell.Wall),
-                arrayOf(Cell.Wall, Cell.Free, Cell.Wall, Cell.Wall),
-                arrayOf(Cell.Wall, Cell.Free, Cell.Free, Cell.End)
+                arrayOf(Cell.Wall, Cell.Wall, Cell.Wall, Cell.Wall)
         )
         )
     }
 }
 
 class Solver(maze: Maze) {
-    var startPosition = Position(0, 1)
     var endPosition = Position(2, 1)
     var staticMaze = maze.staticMaze
 
-    fun findJunctions() {
-        for (y in startPosition.y until staticMaze[0].size) {
-            for (x in startPosition.x until staticMaze[0].size) {
-                val currentCell = staticMaze[y][x]
-                val currentPosition = Position(x, y)
+    fun findJunctions(start: Position) {
+        var startDirection = determineStartDirection(start, staticMaze)
+        var currentCell = staticMaze[start.y][start.x]
 
-                when (isJunction(staticMaze, currentPosition)) {
-                    true -> println("Cell at ($y,$x) is a junction")
-                }
+        while(currentCell.isFree() || currentCell == Cell.Start){
+            println("Current Cell is at location (${start.x},${start.y}) with value of: $currentCell")
+            when (startDirection) {
+                "left" -> start.x--
+                "right" -> start.x++
+                "up" -> start.y--
+                else -> start.y++
             }
+            currentCell = staticMaze[start.y][start.x]
+            when(isJunction(staticMaze, Position(start.x,start.y))){
+                true -> println("Cell at (${start.x},${start.y}) is a junction")
+            }
+            println("New Cell is at location (${start.x},${start.y}) with value of: $currentCell")
+            println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        }
+    }
+
+    private fun determineStartDirection(start: Position, maze: Array<Array<out Cell>>): String{
+        val topCell = maze.getOrNull(start.y - 1)?.getOrNull(start.x)
+        val rightCell = maze.getOrNull(start.y)?.getOrNull(start.x + 1)
+        val leftCell = maze.getOrNull(start.y)?.getOrNull(start.x - 1)
+
+        return when {
+            leftCell?.isFree() == true -> "left"
+            rightCell?.isFree() == true -> "right"
+            topCell?.isFree() == true -> "up"
+            else -> "down"
         }
     }
 
@@ -74,31 +99,19 @@ class Solver(maze: Maze) {
         val leftCell = maze.getOrNull(position.y)?.getOrNull(position.x - 1)
 
         if (centerCell?.isNotFree() == true) {
-            println("Cell at position (${position.y},${position.x}) with value:$centerCell is not a junction because it is not free.")
+            println("Cell at position (${position.x},${position.y}) with value:$centerCell is not a junction because it is not free.")
             return false
         }
 
         if (leftCell?.isFree() == true || rightCell?.isFree() == true) {
-            if (topCell != null) {
-                return topCell.isFree()
-            }
-            if (bottomCell != null) {
-                return bottomCell.isFree()
-            }
-            return false
+            return topCell?.isFree()!! || bottomCell?.isFree()!!
         }
 
         if (topCell?.isFree() == true || bottomCell?.isFree() == true) {
-            if (leftCell != null) {
-                return leftCell.isFree()
-            }
-            if (rightCell != null) {
-                return rightCell.isFree()
-            }
-            return false
+            return leftCell?.isFree()!! || rightCell?.isFree()!!
         }
 
-        println("Cell at position (${position.y},${position.x}) with value:$centerCell is not a junction because there are no orthogonal free cells.")
+        println("Cell at position (${position.x},${position.y}) with value:$centerCell is not a junction because there are no orthogonal free cells.")
         return false
     }
 }
@@ -106,6 +119,6 @@ class Solver(maze: Maze) {
 
 fun main(args: Array<String>) {
     println(Maze.STATIC_MAZE)
-    var solver = Solver(Maze.STATIC_MAZE)
-    solver.findJunctions()
+    val solver = Solver(Maze.STATIC_MAZE)
+    solver.findJunctions(Position(1, 0))
 }
