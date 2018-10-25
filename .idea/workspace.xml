@@ -2,37 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55592084-b1b8-4208-aac7-5f25309d601e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$End.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell$End.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Free.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell$Free.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Junction$bottom.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Junction$left.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Junction$right.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Junction$top.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Junction.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Start.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell$Start.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell$Wall.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell$Wall.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/CellKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/CellKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/META-INF/MazeSolver_main.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/META-INF/MazeSolver_main.kotlin_module" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Maze$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Maze$toString$1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Maze$toString$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Maze.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/MazeSolverKt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Position.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Position.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Searcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Solver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Cell.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Cell.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Maze.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MazeSolver.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Searcher.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Solver.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -97,24 +70,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="kt" value="9" />
+          <entry key="kt" value="11" />
           <entry key="properties" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Kotlin" value="9" />
+          <entry key="Kotlin" value="11" />
           <entry key="Properties" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="kt" value="5455" />
+          <entry key="kt" value="5715" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Kotlin" value="5455" />
+          <entry key="Kotlin" value="5715" />
         </counts>
       </usages-collector>
     </session>
@@ -164,18 +137,14 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Cell.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/MazeGenerator.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="49" lean-forward="true" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+            <state relative-caret-position="323">
+              <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -183,8 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="39" lean-forward="true" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
+            <state relative-caret-position="51">
+              <caret line="3" column="1" lean-forward="true" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -567,8 +536,8 @@
         <option value="$PROJECT_DIR$/src/main/java/Maze.kt" />
         <option value="$PROJECT_DIR$/src/main/java/Searcher.kt" />
         <option value="$PROJECT_DIR$/src/main/java/Cell.kt" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.kt" />
         <option value="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.kt" />
       </list>
     </option>
   </component>
@@ -577,6 +546,12 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-20" />
@@ -611,6 +586,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -641,14 +618,12 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539972563427" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540474271195" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -732,7 +707,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40028000" />
+    <option name="totallyTimeSpent" value="40998000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -744,10 +719,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10394456" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.103355706" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -931,24 +906,20 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Maze.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Solver.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Searcher.kt" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Cell.kt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="39" lean-forward="true" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Cell.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        <state relative-caret-position="51">
+          <caret line="3" column="1" lean-forward="true" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MazeGenerator.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="49" lean-forward="true" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+        <state relative-caret-position="323">
+          <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
         </state>
       </provider>
     </entry>
