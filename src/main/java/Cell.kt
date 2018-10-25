@@ -1,38 +1,28 @@
 sealed class Cell {
-    object Free : Cell()
-    object Wall : Cell()
-    object Start : Cell()
-    object End : Cell()
-    object Junction : Cell() {
-        object top : Cell()
-        object right : Cell()
-        object bottom : Cell()
-        object left : Cell()
-    }
+    data class Free(var position: Position) : Cell()
+    data class Wall(var position: Position) : Cell()
+    data class Start(var position: Position) : Cell()
+    data class End(var position: Position) : Cell()
 
     override fun toString(): String {
         return when (this) {
-            Cell.Free -> "0"
-            Cell.Junction -> "0"
-            Cell.Wall -> "1"
-            Cell.Start -> "2"
-            Cell.End -> "3"
-            else -> "-1"
+            is Cell.Free -> "0"
+            is Cell.Wall -> "1"
+            is Cell.Start -> "2"
+            is Cell.End -> "3"
         }
     }
 }
 
 fun Cell.isFree(): Boolean {
-    return if (this == null){
-        false
-    } else {
-        when (this) {
-            Cell.Free -> true
-            else -> false
-        }
+    return when (this) {
+        is Cell.Free -> true
+        else -> false
     }
 }
 
 fun Cell.isNotFree(): Boolean {
     return !isFree()
 }
+
+data class Position(var x: Int, var y: Int)
