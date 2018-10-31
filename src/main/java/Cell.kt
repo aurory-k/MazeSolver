@@ -15,19 +15,22 @@ sealed class CellType {
     }
 }
 
-fun Cell.isFree(): Boolean {
+fun Cell?.isFree(): Boolean {
+    if (this == null){
+        return false
+    }
     return when (this.type) {
         is CellType.Free -> true
         else -> false
     }
 }
 
-fun Cell.isNotFree(): Boolean {
+fun Cell?.isNotFree(): Boolean {
     return !isFree()
 }
 
-data class Cell(var position: Position, val type: CellType) : CellType()
+data class Cell(val position: Position, val type: CellType) : CellType()
 
-data class Position(var x: Int, var y: Int)
+data class Position(val x: Int, val y: Int)
 
-data class Junction(var position: Position, var searchableDirections: ArrayList<String>) : CellType()
+data class Junction(val position: Position, val searchableDirections: ArrayList<String>) : CellType()
