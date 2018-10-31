@@ -23,7 +23,7 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         }
     }
 
-    private fun findJunctions(): ArrayList<Junction> {
+    fun findJunctions(): ArrayList<Junction> {
         val listOfJunctions = ArrayList<Junction>()
         determineDirection()
 
@@ -70,11 +70,9 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
             leftCell.isFree() && !listOfVisitedPositions.contains(leftCell?.position) -> "left"
             else -> "none"
         }
-//        println("Direction is: $direction")
     }
 
     private fun updateCardinalCells() {
-//        println("Current Position: (${position.x},${position.y})")
         topCell = maze.getOrNull(position.y - 1)?.getOrNull(position.x)
         rightCell = maze.getOrNull(position.y)?.getOrNull(position.x + 1)
         bottomCell = maze.getOrNull(position.y + 1)?.getOrNull(position.x)
