@@ -26,6 +26,8 @@ fun Cell.isNotFree(): Boolean {
     return !isFree()
 }
 
-data class Cell(var givenPosition: Position, val type: CellType) : CellType()
+data class Cell(var position: Position, val type: CellType) : CellType()
 
 data class Position(var x: Int, var y: Int)
+
+data class Junction(var position: Position, var searchableDirections: ArrayList<String>) : CellType()
