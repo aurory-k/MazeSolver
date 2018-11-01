@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MazeTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-10-31T17:18:37" hostname="MGC12V90WHHTDF.tpm.ford.com" time="0.025">
+  <properties/>
+  <testcase name="searcher finds correct junctions" classname="MazeTests" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

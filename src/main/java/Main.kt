@@ -3,6 +3,6 @@ fun main(args : Array<String>) {
     println(mazeGenerator.toString())
     println("-------------------------------")
 
-    val searcher = Searcher(Position(1,0), MazeGenerator.mazeArray)
+    val searcher = Searcher(Position(3,6), MazeGenerator.mazeArray)
     searcher.solveMaze()
 }

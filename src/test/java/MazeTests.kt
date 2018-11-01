@@ -4,8 +4,12 @@ import kotlin.test.assertEquals
 class MazeTests{
     @Test
     fun `searcher finds correct junctions`(){
-        val searcher = Searcher(Position(1,0), MazeGenerator.mazeArray)
-        val listOfJunctions = searcher.findJunctions()
-        assertEquals(listOfJunctions.size, 7)
+        println(MazeGenerator().toString())
+        val searcher = Searcher(Position(6,2), MazeGenerator.mazeArray)
+        searcher.findJunctions()
+        Solver.listOfJunctions.forEach { junction ->
+            println(junction.toString())
+        }
+        assertEquals(7, Solver.listOfJunctions.size)
     }
 }
