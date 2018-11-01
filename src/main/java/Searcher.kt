@@ -11,6 +11,7 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
     }
 
      fun findJunctions(){
+         Solver.listOfVisitedPositions.add(position)
          if(direction == "start"){
              determineDirection()
          }
@@ -23,10 +24,11 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
                     spawnSearcherFromJunction(junction)
                 }
             }
-            Solver.listOfVisitedPositions.add(position)
+
             move()
+            println(MazeGenerator().toString())
+            println("---------------------------------")
             determineDirection()
-            println("Direction: $direction")
         }
     }
 
@@ -49,6 +51,9 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         }else if(direction == "left" && leftCell.isFree()){
             position = position.copy(x = position.x - 1)
         }
+
+        Solver.listOfVisitedPositions.add(position)
+        MazeGenerator.mazeArray[position.y][position.x].type = CellType.Visited
     }
 
     private fun isJunction(): Boolean {

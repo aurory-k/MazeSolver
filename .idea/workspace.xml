@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55592084-b1b8-4208-aac7-5f25309d601e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Solver.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Cell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Cell.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/CellKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/CellKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Junction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Junction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/MainKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Position.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Position.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Searcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Searcher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/MazeTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/MazeTests.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Cell.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Cell.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Searcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Searcher.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/MazeTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MazeTests.kt" afterDir="false" />
     </list>
@@ -167,28 +152,28 @@
         <counts>
           <entry key="MazeTest" value="1" />
           <entry key="gradle" value="1" />
-          <entry key="kt" value="8" />
+          <entry key="kt" value="9" />
           <entry key="kts" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Groovy" value="1" />
-          <entry key="Kotlin" value="10" />
+          <entry key="Kotlin" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="MazeTest" value="29" />
           <entry key="gradle" value="2" />
-          <entry key="kt" value="2719" />
+          <entry key="kt" value="2923" />
           <entry key="kts" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="2" />
-          <entry key="Kotlin" value="2766" />
+          <entry key="Kotlin" value="2970" />
         </counts>
       </usages-collector>
     </session>
@@ -198,8 +183,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Cell.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="20" lean-forward="true" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+            <state relative-caret-position="246">
+              <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/MazeGenerator.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -216,8 +210,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Searcher.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+            <state relative-caret-position="212">
+              <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -699,9 +693,9 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/Main.kt" />
         <option value="$PROJECT_DIR$/src/main/java/Solver.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" />
         <option value="$PROJECT_DIR$/src/main/java/Cell.kt" />
         <option value="$PROJECT_DIR$/src/test/java/MazeTests.kt" />
-        <option value="$PROJECT_DIR$/src/main/java/MazeGenerator.kt" />
         <option value="$PROJECT_DIR$/src/main/java/Searcher.kt" />
       </list>
     </option>
@@ -919,44 +913,44 @@
       <workItem from="1540426250730" duration="639000" />
       <workItem from="1540568604230" duration="3032000" />
       <workItem from="1540950290306" duration="154000" />
-      <workItem from="1541004401064" duration="9065000" />
+      <workItem from="1541004401064" duration="10052000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 19h 59m 37s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 09m 39s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 00m 02s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 11m 40s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 01m 00s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 16m 17s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 01m 04s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 16m 34s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 04m 43s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 17m 12s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 04m 46s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 17m 39s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 06m 37s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 19m 05s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 06m 50s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 22m 44s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 07m 14s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 23m 10s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 08m 02s.xml">
+    <history-entry file="MazeTests_searcher_finds_correct_junctions - 2018.10.31 at 20h 24m 35s.xml">
       <configuration name="MazeTests.searcher finds correct junctions" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60218000" />
+    <option name="totallyTimeSpent" value="61205000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -980,8 +974,8 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30160427" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.38609627" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30160427" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.38609627" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329718" />
@@ -1082,27 +1076,9 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/java/Searcher.kt</url>
-          <line>35</line>
-          <properties />
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Searcher.kt</url>
-          <line>36</line>
-          <properties />
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Searcher.kt</url>
           <line>18</line>
           <properties />
           <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Searcher.kt</url>
-          <line>28</line>
-          <properties />
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1215,17 +1191,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MazeGenerator.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="134" selection-start-line="7" selection-start-column="134" selection-end-line="7" selection-end-column="134" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Cell.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="20" lean-forward="true" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        <state relative-caret-position="246">
+          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1246,10 +1215,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/MazeGenerator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Searcher.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+        <state relative-caret-position="212">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
         </state>
       </provider>
     </entry>
