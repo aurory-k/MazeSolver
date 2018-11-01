@@ -7,10 +7,10 @@ sealed class CellType {
 
     override fun toString(): String {
         return when (this) {
-            is CellType.Free -> "0"
-            is CellType.Wall -> "1"
-            is CellType.Start -> "2"
-            is CellType.End -> "3"
+            is CellType.Free -> " "
+            is CellType.Wall -> "*"
+            is CellType.Start -> "S"
+            is CellType.End -> "E"
             is CellType.Visited -> "X"
             else -> "-1"
         }

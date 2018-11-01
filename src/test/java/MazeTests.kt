@@ -6,7 +6,7 @@ class MazeTests{
     fun `searcher finds correct junctions`(){
         println(MazeGenerator().toString())
         val searcher = Searcher(Position(2,6), MazeGenerator.mazeArray)
-        searcher.findJunctions()
+        searcher.search()
         Solver.listOfJunctions.forEach { junction ->
             println(junction.toString())
         }

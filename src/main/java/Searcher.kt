@@ -10,7 +10,7 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         return Position(0, 0)
     }
 
-     fun findJunctions(){
+     fun search(){
          Solver.listOfVisitedPositions.add(position)
          if(direction == "start"){
              determineDirection()
@@ -19,16 +19,16 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         while (direction != "none") {
             if (isJunction()) {
                 val junction = Junction(position, findJunctionDirections())
-                if(!junctionAlreadyExists(junction)){
+                if(Solver.junctionDoesNotExist(junction)){
                     Solver.listOfJunctions.add(junction)
                     spawnSearcherFromJunction(junction)
                 }
             }
-
             move()
-            println(MazeGenerator().toString())
             println("---------------------------------")
+            println(MazeGenerator().toString())
             determineDirection()
+            Thread.sleep(1000)
         }
     }
 
@@ -36,7 +36,7 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         for (it in junction.searchableDirections) {
             val searcher = Searcher(junction.position, maze)
             searcher.setDirection(it)
-            searcher.findJunctions()
+            searcher.search()
         }
     }
 
@@ -57,7 +57,7 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
     }
 
     private fun isJunction(): Boolean {
-        updateCardinalCells()
+        updateCardinalCells(maze)
         if (topCell.isFree() || bottomCell.isFree()) {
             return rightCell.isFree() || leftCell.isFree()
         }
@@ -70,12 +70,12 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
     }
 
     private fun determineDirection() {
-        updateCardinalCells()
+        updateCardinalCells(maze)
         direction = when {
-            topCell.isFree() && isNotAlreadyVisited(topCell?.position) -> "up"
-            rightCell.isFree() && isNotAlreadyVisited(rightCell?.position) -> "right"
-            bottomCell.isFree() && isNotAlreadyVisited(bottomCell?.position) -> "down"
-            leftCell.isFree() && isNotAlreadyVisited(leftCell?.position) -> "left"
+            topCell.isFree() && Solver.isNotAlreadyVisited(topCell?.position) -> "up"
+            rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell?.position) -> "right"
+            bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell?.position) -> "down"
+            leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell?.position) -> "left"
             else -> "none"
         }
     }
@@ -84,48 +84,26 @@ class Searcher(private var position: Position, private var maze: Array<Array<Cel
         this.direction = direction
     }
 
-    private fun setPosition(position: Position){
-        this.position = position
-    }
-
-    private fun updateCardinalCells() {
+    private fun updateCardinalCells(maze: Array<Array<Cell>>) {
         topCell = maze.getOrNull(position.y - 1)?.getOrNull(position.x)
         rightCell = maze.getOrNull(position.y)?.getOrNull(position.x + 1)
         bottomCell = maze.getOrNull(position.y + 1)?.getOrNull(position.x)
         leftCell = maze.getOrNull(position.y)?.getOrNull(position.x - 1)
     }
 
-    private fun isNotAlreadyVisited(position: Position?): Boolean {
-        return !isAlreadyVisited(position)
-    }
-
-    private fun isAlreadyVisited(position: Position?): Boolean {
-        return Solver.listOfVisitedPositions.contains(position)
-    }
-
-    private fun junctionAlreadyExists(junction: Junction): Boolean{
-        Solver.listOfJunctions.forEach { junctionInList ->
-            if (junction.position == junctionInList.position){
-                return true
-            }
-        }
-
-        return false
-    }
-
     private fun findJunctionDirections(): ArrayList<String> {
-        updateCardinalCells()
+        updateCardinalCells(maze)
         val listOfJunctionDirections = ArrayList<String>()
-        if (topCell.isFree() && isNotAlreadyVisited(topCell?.position)) {
+        if (topCell.isFree() && Solver.isNotAlreadyVisited(topCell?.position)) {
             listOfJunctionDirections.add("up")
         }
-        if (rightCell.isFree() && isNotAlreadyVisited(rightCell?.position)) {
+        if (rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell?.position)) {
             listOfJunctionDirections.add("right")
         }
-        if (bottomCell.isFree() && isNotAlreadyVisited(bottomCell?.position)) {
+        if (bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell?.position)) {
             listOfJunctionDirections.add("down")
         }
-        if (leftCell.isFree() && isNotAlreadyVisited(leftCell?.position)) {
+        if (leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell?.position)) {
             listOfJunctionDirections.add("left")
         }
 
