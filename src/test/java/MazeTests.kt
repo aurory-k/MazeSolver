@@ -1,15 +1,26 @@
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class MazeTests{
+class MazeTests {
     @Test
-    fun `searcher finds correct junctions`(){
+    fun `crawler finds correct junctions`() {
+        var maze = """
+|*|*|*|*|*|*|*|
+|*| | | | | |*|
+|*| |*|*|*| |*|
+|S| |*|*|*| |E|
+|*| |*|*|*| |*|
+|*| | | | | |*|
+|*|*|*|*|*|*|*|
+            """.trimIndent()
+        val mazeGenerator = MazeGenerator()
+        mazeGenerator.generateMazeFromString(maze)
         println(MazeGenerator().toString())
-        val searcher = Searcher(Position(2,6), MazeGenerator.mazeArray)
-        searcher.search()
+        val searcher = Crawler(Position(0, 3), MazeGenerator.mazeArray)
+        searcher.crawl()
         Solver.listOfJunctions.forEach { junction ->
             println(junction.toString())
         }
-        assertEquals(7, Solver.listOfJunctions.size)
+        assertEquals(5, Solver.listOfJunctions.size)
     }
 }

@@ -3,16 +3,17 @@ sealed class CellType {
     object Wall : CellType()
     object Start : CellType()
     object End : CellType()
+    object Boundary : CellType()
     object Visited : CellType()
 
     override fun toString(): String {
         return when (this) {
-            is CellType.Free -> " "
-            is CellType.Wall -> "*"
-            is CellType.Start -> "S"
-            is CellType.End -> "E"
-            is CellType.Visited -> "X"
-            else -> "-1"
+            is Free -> " "
+            is Wall -> "*"
+            is Start -> "S"
+            is End -> "E"
+            is Visited -> "X"
+            is Boundary ->  "#"
         }
     }
 }
@@ -30,11 +31,21 @@ fun Cell?.isFree(): Boolean {
 }
 
 fun Cell?.isNotFree(): Boolean {
+    if(this == null){
+        return false
+    }
     return !isFree()
 }
 
-data class Cell(val position: Position, var type: CellType) : CellType()
+fun Cell?.orElseBoundary(position: Position): Cell {
+    if (this != null) {
+        return this
+    }
+    return Cell(Position(position.x, position.y), CellType.Boundary)
+}
+
+data class Cell(val position: Position, var type: CellType)
 
 data class Position(val x: Int, val y: Int)
 
-data class Junction(val position: Position, val searchableDirections: ArrayList<String>) : CellType()
+data class Junction(val position: Position, val searchableDirections: ArrayList<String>)

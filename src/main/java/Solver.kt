@@ -13,17 +13,16 @@ class Solver {
             return !isAlreadyVisited(position)
         }
 
-        fun junctionAlreadyExists(junction: Junction): Boolean{
+        fun junctionAlreadyExists(junction: Junction): Boolean {
             listOfJunctions.forEach { junctionInList ->
-                if (junction.position == junctionInList.position){
+                if (junction.position == junctionInList.position) {
                     return true
                 }
             }
-
             return false
         }
 
-        fun junctionDoesNotExist(junction: Junction) : Boolean{
+        fun junctionDoesNotExist(junction: Junction): Boolean {
             return !junctionAlreadyExists(junction)
         }
     }
