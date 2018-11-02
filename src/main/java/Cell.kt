@@ -34,6 +34,9 @@ fun Cell?.isNotFree(): Boolean {
     if(this == null){
         return false
     }
+    if(this.type == CellType.Boundary){
+        return false
+    }
     return !isFree()
 }
 

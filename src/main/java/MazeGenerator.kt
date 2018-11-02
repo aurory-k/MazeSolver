@@ -1,6 +1,9 @@
 import CellType.*
 
 class MazeGenerator {
+
+    var listOfVisitedCells = ArrayList<Cell>()
+
     companion object {
         var mazeArray = arrayOf(
                 arrayOf(Cell(Position(0, 0), Wall), Cell(Position(1, 0), End), Cell(Position(2, 0), Wall), Cell(Position(3, 0), Wall), Cell(Position(4, 0), Wall), Cell(Position(5, 0), Wall), Cell(Position(6, 0), Wall)),
@@ -44,7 +47,7 @@ class MazeGenerator {
     }
 
     private fun initializeMaze(numRows: Int, numCols: Int) {
-        var wallMaze = Array(numCols) { y ->
+        val wallMaze = Array(numCols) { y ->
             Array(numRows) { x ->
                 Cell(Position(y, x), Wall)
             }
@@ -55,42 +58,73 @@ class MazeGenerator {
 
     fun generateMaze(numRows: Int, numCols: Int) {
         initializeMaze(numRows, numCols)
-        var listOfVisitedCells = ArrayList<Cell>()
-        var listOfEdges = ArrayList<Cell>()
+        val listOfEdges = ArrayList<Cell>()
 
-        var start = selectStartCell()
-        mazeArray[start.position.x][start.position.y] = start
+        val start = selectStartCell()
+        mazeArray[start.position.y][start.position.x] = start
 
         listOfEdges.addAll(getNewEdges(start))
+        println(listOfEdges.toString())
+
+        while(listOfEdges.size > 0){
+            val currentCell = listOfEdges.shuffled().first()
+            currentCell.type = CellType.Free
+            listOfVisitedCells.add(currentCell)
+            listOfEdges.addAll(getNewEdges(currentCell))
+            listOfEdges.remove(currentCell)
+            println(toString())
+            Thread.sleep(350)
+        }
     }
 
     private fun getNewEdges(currentCell: Cell): ArrayList<Cell> {
-        val topCell = mazeArray.getOrNull(currentCell.position.y)?.getOrNull(currentCell.position.x - 1).orElseBoundary(currentCell.position)
-        val rightCell = mazeArray.getOrNull(currentCell.position.y)?.getOrNull(currentCell.position.x - 1).orElseBoundary(currentCell.position)
-        val bottomCell = mazeArray.getOrNull(currentCell.position.y)?.getOrNull(currentCell.position.x - 1).orElseBoundary(currentCell.position)
-        val leftCell = mazeArray.getOrNull(currentCell.position.y)?.getOrNull(currentCell.position.x - 1).orElseBoundary(currentCell.position)
+        //println(currentCell.position)
+        val (px, py) = currentCell.position
+        val topCell = mazeArray.getOrNull(px)?.getOrNull(py - 1).orElseBoundary(currentCell.position)
+        val rightCell = mazeArray.getOrNull(px + 1)?.getOrNull(py).orElseBoundary(currentCell.position)
+        val bottomCell = mazeArray.getOrNull(px)?.getOrNull(py + 1).orElseBoundary(currentCell.position)
+        val leftCell = mazeArray.getOrNull(px - 1)?.getOrNull(py).orElseBoundary(currentCell.position)
 
-        var newEdges = ArrayList<Cell>()
-        if (topCell.isNotFree()) {
+        val newEdges = ArrayList<Cell>()
+        if (topCell.isNotFree() && !newEdges.contains(topCell) && !listOfVisitedCells.contains(topCell) && getNextCell("top", topCell).isNotFree()) {
             newEdges.add(topCell)
         }
-        if (rightCell.isNotFree()) {
+        if (rightCell.isNotFree() && !newEdges.contains(rightCell) && !listOfVisitedCells.contains(rightCell) && getNextCell("right", rightCell).isNotFree()) {
             newEdges.add(rightCell)
         }
-        if (bottomCell.isNotFree()) {
+        if (bottomCell.isNotFree() && !newEdges.contains(bottomCell) && !listOfVisitedCells.contains(bottomCell) && getNextCell("bottom", bottomCell).isNotFree()) {
             newEdges.add(bottomCell)
         }
-        if (leftCell.isNotFree()) {
+        if (leftCell.isNotFree() && !newEdges.contains(leftCell) && !listOfVisitedCells.contains(leftCell) && getNextCell("left", leftCell).isNotFree()) {
             newEdges.add(leftCell)
         }
 
         return newEdges
     }
 
+    private fun getNextCell(cellLocation: String, cell: Cell): Cell{
+        val (px, py) = cell.position
+        return when (cellLocation){
+            "top" -> {
+                mazeArray.getOrNull(px)?.getOrNull(py - 1).orElseBoundary(cell.position)
+            }
+            "right" -> {
+                mazeArray.getOrNull(px + 1)?.getOrNull(py).orElseBoundary(cell.position)
+            }
+            "bottom" -> {
+                mazeArray.getOrNull(px)?.getOrNull(py + 1).orElseBoundary(cell.position)
+            }
+            "left" -> {
+                mazeArray.getOrNull(px - 1)?.getOrNull(py).orElseBoundary(cell.position)
+            }
+            else -> Cell(Position(0,0), Boundary)
+        }
+    }
+
     private fun selectStartCell(): Cell {
 
         val startSide = (1..4).shuffled().first()
-        var startX = 1
+        var startX = 0
         var startY = 0
 
         when (startSide) {
