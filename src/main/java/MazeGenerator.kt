@@ -59,10 +59,9 @@ class MazeGenerator {
     fun generateMaze(): Cell {
         var listOfEdges = ArrayList<Cell>()
 
-        val start = selectStartCell()
+        val (start, end) = selectStartAndEndCells()
         listOfVisitedCells.add(start)
         mazeArray[start.position.y][start.position.x] = start
-        println("Start Position: (${start.position})")
 
         listOfEdges.addAll(getNewEdges(start))
 
@@ -83,6 +82,8 @@ class MazeGenerator {
             listOfEdges.remove(currentCell)
 //            Thread.sleep(100)
         }
+
+        mazeArray[end.position.y][end.position.x] = end
 
         println("-----------------------------------")
         println(toString())
@@ -141,31 +142,46 @@ class MazeGenerator {
         return numberOfFreeCells
     }
 
-    private fun selectStartCell(): Cell {
+    private fun selectStartAndEndCells(): Pair<Cell,Cell> {
 
         val startSide = (1..4).shuffled().first()
         var startX = 0
         var startY = 0
 
+        var endX = 0
+        var endY = 0
+
         when (startSide) {
             1 -> {
                 startY = 0
                 startX = (1..mazeArray[0].size - 2).shuffled().first()
+
+                endY = mazeArray.size - 1
+                endX = (1..mazeArray[0].size - 2).shuffled().first()
             }
             2 -> {
                 startY = (1..mazeArray.size - 2).shuffled().first()
                 startX = mazeArray[0].size - 1
+
+                endY = (1..mazeArray.size - 2).shuffled().first()
+                endX = 0
             }
             3 -> {
                 startY = mazeArray.size - 1
                 startX = (1..mazeArray[0].size - 2).shuffled().first()
+
+                endY = 0
+                endX = (1..mazeArray[0].size - 2).shuffled().first()
             }
             4 -> {
                 startY = (1..mazeArray.size - 2).shuffled().first()
                 startX = 0
+
+                endY = (1..mazeArray.size - 2).shuffled().first()
+                endX = mazeArray[0].size - 1
             }
         }
 
-        return Cell(Position(startX, startY), Start)
+        return Pair(Cell(Position(startX, startY), Start), Cell(Position(endX, endY), End))
     }
 }

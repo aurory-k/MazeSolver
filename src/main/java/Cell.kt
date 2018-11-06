@@ -25,7 +25,6 @@ fun Cell?.isFree(): Boolean {
     return when (this.type) {
         is CellType.Free -> true
         is CellType.Start -> true
-        is CellType.End -> true
         is CellType.Visited -> true
         else -> false
     }
