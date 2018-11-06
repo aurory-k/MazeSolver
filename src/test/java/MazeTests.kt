@@ -13,10 +13,10 @@ S| |*|*|*| |E
 *| | | | | |*
 *|*|*|*|*|*|*
             """.trimIndent()
-        val mazeGenerator = MazeGenerator()
+        val mazeGenerator = Maze()
         mazeGenerator.generateMazeFromString(maze)
-        println(MazeGenerator().toString())
-        val searcher = Crawler(Position(0, 3), MazeGenerator.mazeArray)
+        println(Maze().toString())
+        val searcher = Crawler(Position(0, 3), Maze.mazeArray)
         searcher.crawl()
         Solver.listOfJunctions.forEach { junction ->
             println(junction.toString())
@@ -25,26 +25,12 @@ S| |*|*|*| |E
     }
 
     @Test
-    fun `maze generates correctly`() {
-//        var maze = """
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//*|*|*|*|*|*|*
-//            """.trimIndent()
-//        val mazeGenerator = MazeGenerator()
-//        mazeGenerator.generateMazeFromString(maze)
-//        println(MazeGenerator().toString())
+    fun `maze randomly generates correctly`() {
         val mazeGenerator = MazeGenerator()
-        mazeGenerator.initializeMaze(5,5)
-        val start = mazeGenerator.generateMaze()
-//        val searcher = Crawler(start.position, MazeGenerator.mazeArray)
-//        searcher.crawl()
-//        Solver.listOfJunctions.forEach { junction ->
-//            println(junction.toString())
-//        }
+        mazeGenerator.initializeMaze(10,10)
+        val (start,end) = mazeGenerator.generateMaze()
+        val searcher = Crawler(start.position, Maze.mazeArray)
+        searcher.crawl()
+        assertEquals(end, Solver.endOfMaze)
     }
 }
