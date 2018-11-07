@@ -2,144 +2,150 @@ import CellType.*
 
 class MazeGenerator {
 
-    var listOfVisitedCells = ArrayList<Cell>()
+    fun generateMaze(numRows: Int, numCols: Int): Triple<Maze, Cell, Cell> {
+        var maze = initializeMaze(numRows, numCols)
 
-    fun initializeMaze(numRows: Int, numCols: Int) {
+        val (start, end) = selectStartAndEndCells(numRows, numCols)
+
+        var visitedCells = listOf(start)
+
+        maze = maze.swap(start)
+
+        var allEdges = getNewEdges(start, maze, visitedCells)
+
+        while (allEdges.isNotEmpty()) {
+            val currentCell = allEdges.shuffled().first()
+
+            println("-----------------------------------")
+            println(maze.toString())
+
+            if (!visitedCells.contains(currentCell) && numberOfFreeNeighborCells(currentCell, maze) < 2) {
+                maze = maze.swap(currentCell.position, Free)
+                allEdges = allEdges.plus(getNewEdges(currentCell, maze, visitedCells))
+                visitedCells = visitedCells.plus(currentCell)
+            } else {
+                maze = maze.swap(currentCell.position, Wall)
+            }
+            allEdges = allEdges.minus(currentCell)
+//            Thread.sleep(400)
+        }
+
+        maze = maze.swap(end)
+
+        println("-----------------------------------")
+        println(maze.toString())
+
+        return Triple(maze, start, end)
+    }
+
+    private fun initializeMaze(numRows: Int, numCols: Int): Maze {
         val wallMaze = Array(numCols) { y ->
             Array(numRows) { x ->
                 Cell(Position(x, y), Wall)
             }
         }
 
-        Maze.mazeArray = wallMaze
+        return Maze(wallMaze)
     }
 
-    fun generateMaze(): Pair<Cell,Cell> {
-        var listOfEdges = ArrayList<Cell>()
-
-        val (start, end) = selectStartAndEndCells()
-        listOfVisitedCells.add(start)
-        Maze.mazeArray[start.position.y][start.position.x] = start
-
-        listOfEdges.addAll(getNewEdges(start))
-
-        while(listOfEdges.size > 0){
-            val currentCell = listOfEdges.shuffled().first()
-            val (px,py) = currentCell.position
-
-            println("-----------------------------------")
-            println(toString())
-
-            if(!listOfVisitedCells.contains(currentCell) && numberOfFreeNeighborCells(currentCell) < 2){
-                Maze.mazeArray[py][px].type = CellType.Free
-                listOfEdges.addAll(getNewEdges(currentCell))
-                listOfVisitedCells.add(currentCell)
-            } else {
-                Maze.mazeArray[py][px].type = CellType.Wall
-            }
-            listOfEdges.remove(currentCell)
-//            Thread.sleep(100)
-        }
-
-        Maze.mazeArray[end.position.y][end.position.x] = end
-
-        println("-----------------------------------")
-        println(toString())
-
-        return Pair(start,end)
-    }
-
-    private fun getNewEdges(currentCell: Cell): ArrayList<Cell> {
+    private fun getNewEdges(currentCell: Cell, maze: Maze, visitedCells: List<Cell>): List<Cell> {
         val (px, py) = currentCell.position
-        val topCell = Maze.mazeArray.getOrNull(py - 1)?.getOrNull(px).orElseBoundary(currentCell.position)
-        val rightCell = Maze.mazeArray.getOrNull(py)?.getOrNull(px + 1).orElseBoundary(currentCell.position)
-        val bottomCell = Maze.mazeArray.getOrNull(py + 1)?.getOrNull(px).orElseBoundary(currentCell.position)
-        val leftCell = Maze.mazeArray.getOrNull(py)?.getOrNull(px - 1).orElseBoundary(currentCell.position)
+        val topCell = maze.get(px, py - 1)
+        val rightCell = maze.get(px + 1, py)
+        val bottomCell = maze.get(px, py + 1)
+        val leftCell = maze.get(px - 1, py)
 
         val newEdges = ArrayList<Cell>()
-        if (topCell.isNotFree() && !newEdges.contains(topCell) && !listOfVisitedCells.contains(topCell)) {
+        if (topCell.isNotFree() && !newEdges.contains(topCell) && !visitedCells.contains(topCell)) {
             newEdges.add(topCell)
         }
-        if (rightCell.isNotFree() && !newEdges.contains(rightCell) && !listOfVisitedCells.contains(rightCell)) {
+        if (rightCell.isNotFree() && !newEdges.contains(rightCell) && !visitedCells.contains(rightCell)) {
             newEdges.add(rightCell)
         }
-        if (bottomCell.isNotFree() && !newEdges.contains(bottomCell) && !listOfVisitedCells.contains(bottomCell)) {
+        if (bottomCell.isNotFree() && !newEdges.contains(bottomCell) && !visitedCells.contains(bottomCell)) {
             newEdges.add(bottomCell)
         }
-        if (leftCell.isNotFree() && !newEdges.contains(leftCell) && !listOfVisitedCells.contains(leftCell)) {
+        if (leftCell.isNotFree() && !newEdges.contains(leftCell) && !visitedCells.contains(leftCell)) {
             newEdges.add(leftCell)
         }
 
         return newEdges
     }
 
-    private fun numberOfFreeNeighborCells(cell: Cell): Int{
+    private fun numberOfFreeNeighborCells(cell: Cell, maze: Maze): Int {
         val (px, py) = cell.position
-        val topCell = Maze.mazeArray.getOrNull(py - 1)?.getOrNull(px).orElseBoundary(cell.position)
-        val rightCell = Maze.mazeArray.getOrNull(py)?.getOrNull(px + 1).orElseBoundary(cell.position)
-        val bottomCell = Maze.mazeArray.getOrNull(py + 1)?.getOrNull(px).orElseBoundary(cell.position)
-        val leftCell = Maze.mazeArray.getOrNull(py)?.getOrNull(px - 1).orElseBoundary(cell.position)
+        val topCell = maze.get(px, py - 1)
+        val rightCell = maze.get(px + 1, py)
+        val bottomCell = maze.get(px, py + 1)
+        val leftCell = maze.get(px - 1, py)
         var numberOfFreeCells = 0
 
-        if(topCell.isFree()){
+        if (topCell.isFree()) {
             numberOfFreeCells += 1
         }
 
-        if(rightCell.isFree()){
+        if (rightCell.isFree()) {
             numberOfFreeCells += 1
         }
 
-        if(bottomCell.isFree()){
+        if (bottomCell.isFree()) {
             numberOfFreeCells += 1
         }
 
-        if(leftCell.isFree()){
+        if (leftCell.isFree()) {
             numberOfFreeCells += 1
         }
 
         return numberOfFreeCells
     }
 
-    private fun selectStartAndEndCells(): Pair<Cell,Cell> {
-
+    private fun selectStartAndEndCells(numRows: Int, numCols: Int): Pair<Cell, Cell> {
         val startSide = (1..4).shuffled().first()
-        var startX = 0
-        var startY = 0
 
-        var endX = 0
-        var endY = 0
-
-        when (startSide) {
+        val (startX, startY, endX, endY) = when (startSide) {
             1 -> {
-                startY = 0
-                startX = (1..Maze.mazeArray[0].size - 2).shuffled().first()
+                val startY = 0
+                val startX = random(numRows)
 
-                endY = Maze.mazeArray.size - 1
-                endX = (1..Maze.mazeArray[0].size - 2).shuffled().first()
+                val endY = numCols - 1
+                val endX = random(numRows)
+
+                Quad(startX, startY, endX, endY)
             }
             2 -> {
-                startY = (1..Maze.mazeArray.size - 2).shuffled().first()
-                startX = Maze.mazeArray[0].size - 1
+                val startY = random(numCols)
+                val startX = numRows - 1
 
-                endY = (1..Maze.mazeArray.size - 2).shuffled().first()
-                endX = 0
+                val endY = random(numCols)
+                val endX = 0
+
+                Quad(startX, startY, endX, endY)
             }
             3 -> {
-                startY = Maze.mazeArray.size - 1
-                startX = (1..Maze.mazeArray[0].size - 2).shuffled().first()
+                val startY = numCols - 1
+                val startX = random(numRows)
 
-                endY = 0
-                endX = (1..Maze.mazeArray[0].size - 2).shuffled().first()
+                val endY = 0
+                val endX = random(numRows)
+
+                Quad(startX, startY, endX, endY)
             }
             4 -> {
-                startY = (1..Maze.mazeArray.size - 2).shuffled().first()
-                startX = 0
+                val startY = random(numCols)
+                val startX = 0
 
-                endY = (1..Maze.mazeArray.size - 2).shuffled().first()
-                endX = Maze.mazeArray[0].size - 1
+                val endY = random(numCols)
+                val endX = numRows - 1
+
+                Quad(startX, startY, endX, endY)
             }
+            else -> throw IllegalStateException()
         }
 
         return Pair(Cell(Position(startX, startY), Start), Cell(Position(endX, endY), End))
     }
+
+    private data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
+
+    private fun random(numRows: Int) = (1..numRows - 2).shuffled().first()
 }

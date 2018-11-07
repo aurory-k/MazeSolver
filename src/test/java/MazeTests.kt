@@ -4,7 +4,7 @@ import kotlin.test.assertEquals
 class MazeTests {
     @Test
     fun `crawler finds correct junctions`() {
-        var maze = """
+        var stringMaze = """
 *|*|*|*|*|*|*
 *| | | | | |*
 *| |*|*|*| |*
@@ -13,10 +13,9 @@ S| |*|*|*| |E
 *| | | | | |*
 *|*|*|*|*|*|*
             """.trimIndent()
-        val mazeGenerator = Maze()
-        mazeGenerator.generateMazeFromString(maze)
-        println(Maze().toString())
-        val searcher = Crawler(Position(0, 3), Maze.mazeArray)
+        val maze = Maze.generateMazeFromString(stringMaze)
+        println(maze.toString())
+        val searcher = Crawler(Position(0, 3), maze)
         searcher.crawl()
         Solver.listOfJunctions.forEach { junction ->
             println(junction.toString())
@@ -27,9 +26,8 @@ S| |*|*|*| |E
     @Test
     fun `maze randomly generates correctly`() {
         val mazeGenerator = MazeGenerator()
-        mazeGenerator.initializeMaze(10,10)
-        val (start,end) = mazeGenerator.generateMaze()
-        val searcher = Crawler(start.position, Maze.mazeArray)
+        val (maze, start, end) = mazeGenerator.generateMaze(20,20)
+        val searcher = Crawler(start.position, maze)
         searcher.crawl()
         assertEquals(end, Solver.endOfMaze)
     }

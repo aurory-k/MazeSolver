@@ -13,13 +13,13 @@ sealed class CellType {
             is Start -> "S"
             is End -> "E"
             is Visited -> "X"
-            is Boundary ->  "#"
+            is Boundary -> "#"
         }
     }
 }
 
 fun Cell?.isFree(): Boolean {
-    if (this == null){
+    if (this == null) {
         return false
     }
     return when (this.type) {
@@ -31,10 +31,10 @@ fun Cell?.isFree(): Boolean {
 }
 
 fun Cell?.isNotFree(): Boolean {
-    if(this == null){
+    if (this == null) {
         return false
     }
-    if(this.type == CellType.Boundary){
+    if (this.type == CellType.Boundary) {
         return false
     }
     return !isFree()
@@ -47,7 +47,7 @@ fun Cell?.orElseBoundary(position: Position): Cell {
     return Cell(Position(position.x, position.y), CellType.Boundary)
 }
 
-data class Cell(val position: Position, var type: CellType)
+data class Cell(val position: Position, val type: CellType)
 
 data class Position(val x: Int, val y: Int)
 

@@ -1,27 +1,40 @@
 import CellType.*
 
-class Crawler(private var position: Position, private var maze: Array<Array<Cell>>) {
-    private var direction: String = "start"
+const val START = "start"
+const val NONE = "none"
+const val UP = "up"
+const val DOWN = "down"
+const val RIGHT = "right"
+const val LEFT = "left"
 
+sealed class Direction() {
+    object Start : Direction()
+    object None : Direction()
+    object Up : Direction()
+    object Right : Direction()
+    object Down : Direction()
+    object Left : Direction()
+}
+
+class Crawler(private var position: Position, private var maze: Maze, private var direction: String = START) {
     private var topCell: Cell = Cell(Position(position.x, position.y + 1), Wall)
     private var rightCell: Cell = Cell(Position(position.x + 1, position.y), Wall)
     private var bottomCell: Cell = Cell(Position(position.x, position.y - 1), Wall)
     private var leftCell: Cell = Cell(Position(position.x - 1, position.y), Wall)
 
     fun crawl() {
-        if(Solver.endOfMaze.type != Boundary){
+        if (Solver.endOfMaze.type != Boundary) {
             return
         }
 
-//        Solver.listOfVisitedPositions.add(position)
-        if (direction == "start") {
+        if (direction == START) {
             determineDirection()
         }
 
-        while (direction != "none") {
-            val (isEnd, cell) = checkForEnd(maze)
-            if(isEnd){
-                Solver.endOfMaze = Maze.mazeArray[cell.position.y][cell.position.x]
+        while (direction != NONE) {
+            val (isEnd, cell) = checkForEnd()
+            if (isEnd) {
+                Solver.endOfMaze = maze.get(cell.position)
                 return
             }
             if (isJunction()) {
@@ -31,38 +44,38 @@ class Crawler(private var position: Position, private var maze: Array<Array<Cell
                     spawnSearcherFromJunction(junction)
                 }
             }
-            move()
-            println("---------------------------------")
-            println(Maze().toString())
+            this.maze = move()
+            println("-------------fdsa---------------")
+            println(this.maze.toString())
             determineDirection()
         }
     }
 
     private fun spawnSearcherFromJunction(junction: Junction) {
         for (it in junction.searchableDirections) {
-            val searcher = Crawler(junction.position, maze)
+            val searcher = Crawler(junction.position, this.maze)
             searcher.setDirection(it)
             searcher.crawl()
         }
     }
 
-    private fun move() {
-        if (direction == "up" && topCell.isFree()) {
+    private fun move(): Maze {
+        if (direction == UP && topCell.isFree()) {
             position = position.copy(y = position.y - 1)
-        } else if (direction == "right" && rightCell.isFree()) {
+        } else if (direction == RIGHT && rightCell.isFree()) {
             position = position.copy(x = position.x + 1)
-        } else if (direction == "down" && bottomCell.isFree()) {
+        } else if (direction == DOWN && bottomCell.isFree()) {
             position = position.copy(y = position.y + 1)
-        } else if (direction == "left" && leftCell.isFree()) {
+        } else if (direction == LEFT && leftCell.isFree()) {
             position = position.copy(x = position.x - 1)
         }
 
         Solver.listOfVisitedPositions.add(position)
-        Maze.mazeArray[position.y][position.x].type = Visited
+        return maze.swap(position, Visited)
     }
 
     private fun isJunction(): Boolean {
-        updateCardinalCells(maze)
+        updateCardinalCells()
         if (topCell.isFree() || bottomCell.isFree()) {
             return rightCell.isFree() || leftCell.isFree()
         }
@@ -75,13 +88,13 @@ class Crawler(private var position: Position, private var maze: Array<Array<Cell
     }
 
     private fun determineDirection() {
-        updateCardinalCells(maze)
+        updateCardinalCells()
         direction = when {
-            topCell.isFree() && Solver.isNotAlreadyVisited(topCell?.position) -> "up"
-            rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell?.position) -> "right"
-            bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell?.position) -> "down"
-            leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell?.position) -> "left"
-            else -> "none"
+            topCell.isFree() && Solver.isNotAlreadyVisited(topCell.position) -> UP
+            rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell.position) -> RIGHT
+            bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell.position) -> DOWN
+            leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell.position) -> LEFT
+            else -> NONE
         }
     }
 
@@ -89,15 +102,15 @@ class Crawler(private var position: Position, private var maze: Array<Array<Cell
         this.direction = direction
     }
 
-    private fun updateCardinalCells(maze: Array<Array<Cell>>) {
-        topCell = maze.getOrNull(position.y - 1)?.getOrNull(position.x).orElseBoundary(position)
-        rightCell = maze.getOrNull(position.y)?.getOrNull(position.x + 1).orElseBoundary(position)
-        bottomCell = maze.getOrNull(position.y + 1)?.getOrNull(position.x).orElseBoundary(position)
-        leftCell = maze.getOrNull(position.y)?.getOrNull(position.x - 1).orElseBoundary(position)
+    private fun updateCardinalCells() {
+        topCell = maze.get(position.x, position.y - 1)
+        rightCell = maze.get(position.x + 1, position.y)
+        bottomCell = maze.get(position.x, position.y + 1)
+        leftCell = maze.get(position.x - 1, position.y)
     }
 
-    private fun checkForEnd(maze: Array<Array<Cell>>): Pair<Boolean, Cell> {
-        updateCardinalCells(maze)
+    private fun checkForEnd(): Pair<Boolean, Cell> {
+        updateCardinalCells()
         return when (End) {
             topCell.type -> Pair(true, topCell)
             rightCell.type -> Pair(true, rightCell)
@@ -108,19 +121,19 @@ class Crawler(private var position: Position, private var maze: Array<Array<Cell
     }
 
     private fun findJunctionDirections(): ArrayList<String> {
-        updateCardinalCells(maze)
+        updateCardinalCells()
         val listOfJunctionDirections = ArrayList<String>()
         if (topCell.isFree() && Solver.isNotAlreadyVisited(topCell.position)) {
-            listOfJunctionDirections.add("up")
+            listOfJunctionDirections.add(UP)
         }
-        if (rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell?.position)) {
-            listOfJunctionDirections.add("right")
+        if (rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell.position)) {
+            listOfJunctionDirections.add(RIGHT)
         }
-        if (bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell?.position)) {
-            listOfJunctionDirections.add("down")
+        if (bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell.position)) {
+            listOfJunctionDirections.add(DOWN)
         }
-        if (leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell?.position)) {
-            listOfJunctionDirections.add("left")
+        if (leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell.position)) {
+            listOfJunctionDirections.add(LEFT)
         }
 
         return listOfJunctionDirections
