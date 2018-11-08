@@ -5,32 +5,40 @@ class MazeGenerator {
         var maze = initializeMaze(numRows, numCols)
 
         val (start, end, startDirection) = selectStartAndEndCells(numRows, numCols)
-
-        var visitedCells = listOf(start)
-
+        var visitedCells = listOf<Cell>()
         maze = maze.swap(start)
 
-        var allEdges = getNewEdges(start, maze, visitedCells)
+        var allFrontierCells = getNewFrontierCells(start, maze, visitedCells)
 
-        while (allEdges.isNotEmpty()) {
-            val currentCell = allEdges.shuffled().first()
+        while (allFrontierCells.isNotEmpty()) {
+            val currentCell = allFrontierCells.shuffled().first()
+            var listOfNeighborCells = getFrontierNeighborCells(currentCell, maze, visitedCells)
 
-            println("-----------------------------------")
-            println(maze.toString())
-
-            if (!visitedCells.contains(currentCell) && numberOfFreeNeighborCells(currentCell, maze) < 2) {
-                maze = maze.swap(currentCell.position, Free)
-                allEdges = allEdges.plus(getNewEdges(currentCell, maze, visitedCells))
+            if (listOfNeighborCells.isNotEmpty()) {
+                var (neighborCell, direction) = listOfNeighborCells.shuffled().first()
+                var (x, y) = neighborCell.position
+                when (direction) {
+                    "top" -> y++
+                    "right" -> x--
+                    "bottom" -> y--
+                    "left" -> x++
+                }
+                neighborCell = maze.get(x, y)
+                if(numberOfFreeNeighborCells(neighborCell, maze) < 2){
+                    maze = maze.swap(neighborCell.position, Free)
+                }
+                println("-----------------------------------")
+                println(maze.toString())
+                allFrontierCells = allFrontierCells.plus(getNewFrontierCells(neighborCell, maze, visitedCells))
                 visitedCells = visitedCells.plus(currentCell)
-            } else {
-                maze = maze.swap(currentCell.position, Wall)
-
             }
-            allEdges = allEdges.minus(currentCell)
+            allFrontierCells = allFrontierCells.minus(currentCell)
 //            Thread.sleep(100)
-        }
 
-        maze = maze.swap(end)
+            if(allFrontierCells.isEmpty()){
+                maze = maze.swap(currentCell.position, End)
+            }
+        }
 
         println("-----------------------------------")
         println(maze.toString())
@@ -48,28 +56,55 @@ class MazeGenerator {
         return Maze(wallMaze)
     }
 
-    private fun getNewEdges(currentCell: Cell, maze: Maze, visitedCells: List<Cell>): List<Cell> {
+    private fun getFrontierNeighborCells(currentCell: Cell, maze: Maze, visitedCells: List<Cell>): List<Pair<Cell, String>> {
         val (px, py) = currentCell.position
-        val topCell = maze.get(px, py - 1)
-        val rightCell = maze.get(px + 1, py)
-        val bottomCell = maze.get(px, py + 1)
-        val leftCell = maze.get(px - 1, py)
+        val topCell = maze.get(px, py - 2)
+        val rightCell = maze.get(px + 2, py)
+        val bottomCell = maze.get(px, py + 2)
+        val leftCell = maze.get(px - 2, py)
 
-        val newEdges = ArrayList<Cell>()
-        if (topCell.isNotFree() && !newEdges.contains(topCell) && !visitedCells.contains(topCell)) {
-            newEdges.add(topCell)
-        }
-        if (rightCell.isNotFree() && !newEdges.contains(rightCell) && !visitedCells.contains(rightCell)) {
-            newEdges.add(rightCell)
-        }
-        if (bottomCell.isNotFree() && !newEdges.contains(bottomCell) && !visitedCells.contains(bottomCell)) {
-            newEdges.add(bottomCell)
-        }
-        if (leftCell.isNotFree() && !newEdges.contains(leftCell) && !visitedCells.contains(leftCell)) {
-            newEdges.add(leftCell)
+        val neighborCells = ArrayList<Pair<Cell, String>>()
+        if (topCell.isFree() && !visitedCells.contains(topCell) &&  py - 2 >= 0) {
+            neighborCells.add(Pair(topCell, "top"))
         }
 
-        return newEdges
+        if (rightCell.isFree() && !visitedCells.contains(rightCell) && px + 2 < maze.getRowSize()) {
+            neighborCells.add(Pair(rightCell, "right"))
+        }
+
+        if (leftCell.isFree() && !visitedCells.contains(leftCell) && px - 2 >= 0) {
+            neighborCells.add(Pair(leftCell, "left"))
+        }
+
+        if (bottomCell.isFree() && !visitedCells.contains(bottomCell) && py + 2 < maze.getColSize()) {
+            neighborCells.add(Pair(bottomCell, "bottom"))
+        }
+
+        return neighborCells
+    }
+
+    private fun getNewFrontierCells(currentCell: Cell, maze: Maze, visitedCells: List<Cell>): List<Cell> {
+        val (px, py) = currentCell.position
+        val topCell = maze.get(px, py - 2)
+        val rightCell = maze.get(px + 2, py)
+        val bottomCell = maze.get(px, py + 2)
+        val leftCell = maze.get(px - 2, py)
+
+        val frontierCells = ArrayList<Cell>()
+        if (topCell.isNotFree() && !frontierCells.contains(topCell) && !visitedCells.contains(topCell)) {
+            frontierCells.add(topCell)
+        }
+        if (rightCell.isNotFree() && !frontierCells.contains(rightCell) && !visitedCells.contains(rightCell)) {
+            frontierCells.add(rightCell)
+        }
+        if (bottomCell.isNotFree() && !frontierCells.contains(bottomCell) && !visitedCells.contains(bottomCell)) {
+            frontierCells.add(bottomCell)
+        }
+        if (leftCell.isNotFree() && !frontierCells.contains(leftCell) && !visitedCells.contains(leftCell)) {
+            frontierCells.add(leftCell)
+        }
+
+        return frontierCells
     }
 
     private fun numberOfFreeNeighborCells(cell: Cell, maze: Maze): Int {
@@ -98,6 +133,7 @@ class MazeGenerator {
 
         return numberOfFreeCells
     }
+
 
     private fun selectStartAndEndCells(numRows: Int, numCols: Int): Triple<Cell, Cell, String> {
         val startSide = (1..4).shuffled().first()

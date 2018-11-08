@@ -6,9 +6,9 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 
 
-const val NUM_ROWS = 10
-const val NUM_COLS = 10
-const val CELL_SIZE = 25
+const val NUM_ROWS = 100
+const val NUM_COLS = 100
+const val CELL_SIZE = 5
 
 fun main(args: Array<String>) {
     val mazeGenerator = MazeGenerator()
