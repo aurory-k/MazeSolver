@@ -22,16 +22,16 @@ class Crawler(private var position: Position, private var maze: Maze, private va
     private var bottomCell: Cell = Cell(Position(position.x, position.y - 1), Wall)
     private var leftCell: Cell = Cell(Position(position.x - 1, position.y), Wall)
 
-    fun crawl() {
+    fun crawl(): Maze {
         if (Solver.endOfMaze.type != Boundary) {
-            return
+            return maze
         }
 
         while (direction != NONE) {
             val (isEnd, cell) = checkForEnd()
             if (isEnd) {
                 Solver.endOfMaze = maze.get(cell.position)
-                return
+                return maze
             }
             if (isJunction()) {
                 val junction = Junction(position, findJunctionDirections())
@@ -41,9 +41,11 @@ class Crawler(private var position: Position, private var maze: Maze, private va
                 }
             }
             maze = move()
-            println("----------------------------")
-            println(maze.toString())
+//            println("----------------------------")
+//            println(maze.toString())
         }
+
+        return maze
     }
 
     private fun spawnSearcherFromJunction(junction: Junction) {

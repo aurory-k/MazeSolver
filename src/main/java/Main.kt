@@ -6,16 +6,16 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 
 
-const val NUM_ROWS = 100
-const val NUM_COLS = 100
-const val CELL_SIZE = 5
+const val NUM_ROWS = 25
+const val NUM_COLS = 25
+const val CELL_SIZE = 25
 
 fun main(args: Array<String>) {
     val mazeGenerator = MazeGenerator()
     val (maze, start, end, startDirection) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
 
     val crawler = Crawler(start.position, maze, startDirection)
-    //crawler.crawl()
+    //val crawledMaze = crawler.crawl()
 
     val frame = JFrame()
     frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
