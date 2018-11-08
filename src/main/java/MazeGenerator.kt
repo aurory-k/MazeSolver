@@ -1,11 +1,10 @@
 import CellType.*
 
 class MazeGenerator {
-
-    fun generateMaze(numRows: Int, numCols: Int): Triple<Maze, Cell, Cell> {
+    fun generateMaze(numRows: Int, numCols: Int): Quad<Maze, Cell, Cell, String> {
         var maze = initializeMaze(numRows, numCols)
 
-        val (start, end) = selectStartAndEndCells(numRows, numCols)
+        val (start, end, startDirection) = selectStartAndEndCells(numRows, numCols)
 
         var visitedCells = listOf(start)
 
@@ -25,9 +24,10 @@ class MazeGenerator {
                 visitedCells = visitedCells.plus(currentCell)
             } else {
                 maze = maze.swap(currentCell.position, Wall)
+
             }
             allEdges = allEdges.minus(currentCell)
-//            Thread.sleep(400)
+//            Thread.sleep(100)
         }
 
         maze = maze.swap(end)
@@ -35,7 +35,7 @@ class MazeGenerator {
         println("-----------------------------------")
         println(maze.toString())
 
-        return Triple(maze, start, end)
+        return Quad(maze, start, end, startDirection)
     }
 
     private fun initializeMaze(numRows: Int, numCols: Int): Maze {
@@ -99,10 +99,10 @@ class MazeGenerator {
         return numberOfFreeCells
     }
 
-    private fun selectStartAndEndCells(numRows: Int, numCols: Int): Pair<Cell, Cell> {
+    private fun selectStartAndEndCells(numRows: Int, numCols: Int): Triple<Cell, Cell, String> {
         val startSide = (1..4).shuffled().first()
 
-        val (startX, startY, endX, endY) = when (startSide) {
+        val (startX, startY, endX, endY, startDirection) = when (startSide) {
             1 -> {
                 val startY = 0
                 val startX = random(numRows)
@@ -110,7 +110,8 @@ class MazeGenerator {
                 val endY = numCols - 1
                 val endX = random(numRows)
 
-                Quad(startX, startY, endX, endY)
+                val startDirection = "down"
+                Quint(startX, startY, endX, endY, startDirection)
             }
             2 -> {
                 val startY = random(numCols)
@@ -119,7 +120,8 @@ class MazeGenerator {
                 val endY = random(numCols)
                 val endX = 0
 
-                Quad(startX, startY, endX, endY)
+                val startDirection = "left"
+                Quint(startX, startY, endX, endY, startDirection)
             }
             3 -> {
                 val startY = numCols - 1
@@ -128,7 +130,8 @@ class MazeGenerator {
                 val endY = 0
                 val endX = random(numRows)
 
-                Quad(startX, startY, endX, endY)
+                val startDirection = "up"
+                Quint(startX, startY, endX, endY, startDirection)
             }
             4 -> {
                 val startY = random(numCols)
@@ -137,15 +140,17 @@ class MazeGenerator {
                 val endY = random(numCols)
                 val endX = numRows - 1
 
-                Quad(startX, startY, endX, endY)
+                val startDirection = "right"
+                Quint(startX, startY, endX, endY, startDirection)
             }
             else -> throw IllegalStateException()
         }
 
-        return Pair(Cell(Position(startX, startY), Start), Cell(Position(endX, endY), End))
+        return Triple(Cell(Position(startX, startY), Start), Cell(Position(endX, endY), End), startDirection)
     }
 
-    private data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
+    data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
+    private data class Quint<T1, T2, T3, T4, T5>(val v1: T1, val v2: T2, val v3: T3, val v4: T4, val v5: T5)
 
     private fun random(numRows: Int) = (1..numRows - 2).shuffled().first()
 }

@@ -25,6 +25,14 @@ class Maze(private val mazeArray: Array<Array<Cell>>) {
         }
     }
 
+    fun getRowSize(): Int {
+        return mazeArray[0].size
+    }
+
+    fun getColSize(): Int {
+        return mazeArray.size
+    }
+
     fun get(x: Int, y: Int): Cell {
         return mazeArray.getOrNull(y)?.getOrNull(x).orElseBoundary(Position(x, y))
     }
@@ -35,7 +43,6 @@ class Maze(private val mazeArray: Array<Array<Cell>>) {
     }
 
     private fun Array<Array<Cell>>.copy() = map { it.clone() }.toTypedArray()
-
 
     fun swap(position: Position, type: CellType): Maze {
         val mazeArray = this.mazeArray.copy()

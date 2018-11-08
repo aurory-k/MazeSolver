@@ -15,7 +15,7 @@ S| |*|*|*| |E
             """.trimIndent()
         val maze = Maze.generateMazeFromString(stringMaze)
         println(maze.toString())
-        val searcher = Crawler(Position(0, 3), maze)
+        val searcher = Crawler(Position(0, 3), maze, "right")
         searcher.crawl()
         Solver.listOfJunctions.forEach { junction ->
             println(junction.toString())

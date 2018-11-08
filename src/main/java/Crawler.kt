@@ -27,10 +27,6 @@ class Crawler(private var position: Position, private var maze: Maze, private va
             return
         }
 
-        if (direction == START) {
-            determineDirection()
-        }
-
         while (direction != NONE) {
             val (isEnd, cell) = checkForEnd()
             if (isEnd) {
@@ -44,17 +40,15 @@ class Crawler(private var position: Position, private var maze: Maze, private va
                     spawnSearcherFromJunction(junction)
                 }
             }
-            this.maze = move()
-            println("-------------fdsa---------------")
-            println(this.maze.toString())
-            determineDirection()
+            maze = move()
+            println("----------------------------")
+            println(maze.toString())
         }
     }
 
     private fun spawnSearcherFromJunction(junction: Junction) {
         for (it in junction.searchableDirections) {
-            val searcher = Crawler(junction.position, this.maze)
-            searcher.setDirection(it)
+            val searcher = Crawler(junction.position, maze, it)
             searcher.crawl()
         }
     }
@@ -68,6 +62,8 @@ class Crawler(private var position: Position, private var maze: Maze, private va
             position = position.copy(y = position.y + 1)
         } else if (direction == LEFT && leftCell.isFree()) {
             position = position.copy(x = position.x - 1)
+        } else {
+            direction = NONE
         }
 
         Solver.listOfVisitedPositions.add(position)
@@ -85,21 +81,6 @@ class Crawler(private var position: Position, private var maze: Maze, private va
         }
 
         return false
-    }
-
-    private fun determineDirection() {
-        updateCardinalCells()
-        direction = when {
-            topCell.isFree() && Solver.isNotAlreadyVisited(topCell.position) -> UP
-            rightCell.isFree() && Solver.isNotAlreadyVisited(rightCell.position) -> RIGHT
-            bottomCell.isFree() && Solver.isNotAlreadyVisited(bottomCell.position) -> DOWN
-            leftCell.isFree() && Solver.isNotAlreadyVisited(leftCell.position) -> LEFT
-            else -> NONE
-        }
-    }
-
-    private fun setDirection(direction: String) {
-        this.direction = direction
     }
 
     private fun updateCardinalCells() {
