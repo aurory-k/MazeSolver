@@ -20,30 +20,39 @@ class Crawler(
         private var position: Position,
         private var maze: Maze,
         private var direction: String = START,
-        private val listOfVisitedPositions: ArrayList<Position>,
-        private val listOfJunctions: ArrayList<Junction>
-        ) {
+        private var listOfVisitedPositions: List<Position>,
+        private var spawnedJunction: Junction? = null
+) {
     private var topCell: Cell = Cell(Position(position.x, position.y + 1), Wall)
     private var rightCell: Cell = Cell(Position(position.x + 1, position.y), Wall)
     private var bottomCell: Cell = Cell(Position(position.x, position.y - 1), Wall)
     private var leftCell: Cell = Cell(Position(position.x - 1, position.y), Wall)
 
-    fun crawl(): Maze {
+    fun crawl(): List<Position> {
+        var listOfJunctions = listOf<Junction?>()
+
+        if (spawnedJunction != null) {
+            listOfJunctions = listOfJunctions.plus(spawnedJunction)
+        }
+
         if (Solver.endOfMaze.type != Boundary) {
-            return maze
+            return listOfVisitedPositions
         }
 
         while (direction != NONE) {
             val (isEnd, cell) = checkForEnd()
             if (isEnd) {
                 Solver.endOfMaze = maze.get(cell.position)
-                return maze
+                return listOfVisitedPositions
             }
             if (isJunction()) {
                 val junction = Junction(position, findJunctionDirections(listOfVisitedPositions))
+
                 if (!listOfJunctions.contains(junction)) {
-                    listOfJunctions.add(junction)
-                    spawnSearcherFromJunction(junction, listOfVisitedPositions, listOfJunctions)
+                    listOfJunctions.plus(junction)
+                    listOfVisitedPositions = listOfVisitedPositions.plus(junction.position)
+                    spawnSearcherFromJunction(junction, listOfVisitedPositions)
+                    return listOfVisitedPositions
                 }
             }
             maze = move()
@@ -51,12 +60,12 @@ class Crawler(
             println(maze.toString())
         }
 
-        return maze
+        return listOfVisitedPositions
     }
 
-    private fun spawnSearcherFromJunction(junction: Junction, listOfVisitedPositions: ArrayList<Position>, listOfJunctions: ArrayList<Junction>) {
+    private fun spawnSearcherFromJunction(junction: Junction, listOfVisitedPositions: List<Position>) {
         for (it in junction.searchableDirections) {
-            val searcher = Crawler(junction.position, maze, it, listOfVisitedPositions, listOfJunctions)
+            val searcher = Crawler(junction.position, maze, it, listOfVisitedPositions, junction)
             searcher.crawl()
         }
     }
@@ -73,13 +82,13 @@ class Crawler(
         } else {
             direction = NONE
         }
-
-        listOfVisitedPositions.add(position)
+        listOfVisitedPositions = listOfVisitedPositions.plus(position)
         return maze.swap(position, Visited)
     }
 
     private fun isJunction(): Boolean {
         updateCardinalCells()
+
         if (topCell.isFree() || bottomCell.isFree()) {
             return rightCell.isFree() || leftCell.isFree()
         }
@@ -109,7 +118,7 @@ class Crawler(
         }
     }
 
-    private fun findJunctionDirections(listOfVisitedPositions: ArrayList<Position>): ArrayList<String> {
+    private fun findJunctionDirections(listOfVisitedPositions: List<Position>): ArrayList<String> {
         updateCardinalCells()
         val listOfJunctionDirections = ArrayList<String>()
         if (topCell.isFree() && !listOfVisitedPositions.contains(topCell.position)) {

@@ -6,28 +6,31 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 
 
-const val NUM_ROWS = 25
-const val NUM_COLS = 25
-const val CELL_SIZE = 25
+const val NUM_ROWS = 9
+const val NUM_COLS = 9
+const val CELL_SIZE = 100
 
 fun main(args: Array<String>) {
     val mazeGenerator = MazeGenerator()
     val (maze, start, end, startDirection) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
 
-    val crawler = Crawler(start.position, maze, startDirection, ArrayList(), ArrayList())
-    val crawledMaze = crawler.crawl()
+    val crawler = Crawler(start.position, maze, startDirection, listOf())
+    val crawledPositions = crawler.crawl()
+    var crawledMaze = maze
+
+    crawledPositions.forEach { position ->
+        crawledMaze = maze.swap(position, Visited)
+    }
 
     val frame = JFrame()
-    frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
     frame.isUndecorated = true
     frame.isVisible = true
     frame.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
 
-    val canvas = Canvas(maze)
+    val canvas = Canvas(crawledMaze)
     canvas.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
 
     frame.contentPane.add(canvas)
-
 }
 
 class Canvas(private val maze: Maze) : JPanel() {
