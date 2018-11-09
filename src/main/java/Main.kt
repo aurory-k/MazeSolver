@@ -14,8 +14,8 @@ fun main(args: Array<String>) {
     val mazeGenerator = MazeGenerator()
     val (maze, start, end, startDirection) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
 
-    val crawler = Crawler(start.position, maze, startDirection)
-    //val crawledMaze = crawler.crawl()
+    val crawler = Crawler(start.position, maze, startDirection, ArrayList(), ArrayList())
+    val crawledMaze = crawler.crawl()
 
     val frame = JFrame()
     frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
