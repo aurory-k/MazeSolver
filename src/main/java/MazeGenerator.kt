@@ -1,52 +1,46 @@
 import CellType.*
 
 class MazeGenerator {
-    fun generateMaze(numRows: Int, numCols: Int): Quad<Maze, Cell, Cell, String> {
+    fun generateMaze(numRows: Int, numCols: Int): Triple<Maze, Cell, Cell> {
         var maze = initializeMaze(numRows, numCols)
 
-        val (start, startDirection) = selectStartAndEndCells(numRows, numCols)
-        var endCell = Cell(Position(0,0), End)
-        var mazeCells = listOf<Cell>()
-        maze = maze.swap(start)
+        val (startCell, endCell) = selectStartAndEndCells(numRows, numCols)
+        maze = maze.swap(startCell)
 
-        var allFrontierCells = start.getFrontierCells(maze)
+        var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-            val frontierCell = allFrontierCells.shuffled().first()
-
-            val listOfNeighborCells = frontierCell.getNeighborCells(maze)
-
-            if (listOfNeighborCells.isNotEmpty()) {
-                var (neighborCell, direction) = listOfNeighborCells.shuffled().first()
-                maze = maze.swap(frontierCell.position, Free)
-                var (x, y) = neighborCell.position
-                when (direction) {
-                    "top" -> y++
-                    "right" -> x--
-                    "bottom" -> y--
-                    "left" -> x++
-                }
-                neighborCell = maze.get(x, y)
-                maze = maze.swap(neighborCell.position, Free)
-                //println("-----------------------------------")
-                //println(maze.toString())
-                allFrontierCells = allFrontierCells.plus(frontierCell.getFrontierCells(maze))
-                allFrontierCells = cullFrontierCells(allFrontierCells, maze)
-                mazeCells = mazeCells.plus(frontierCell)
-            }
-            allFrontierCells = allFrontierCells.minus(frontierCell)
-//            Thread.sleep(100)
-
-            if (allFrontierCells.isEmpty()) {
-                maze = maze.swap(frontierCell.position, End)
-                endCell = Cell(frontierCell.position, End)
-            }
+            val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
+            maze = updatedMaze
+            allFrontierCells = updatedFrontierCells
         }
 
-        //println("-----------------------------------")
-        //println(maze.toString())
+        maze = maze.swap(endCell)
 
-        return Quad(maze, start, endCell, startDirection)
+        return Triple(maze, startCell, endCell)
+    }
+
+    private fun processNextMapChange(maze: Maze, allFrontierCells: List<Cell>): Pair<Maze, List<Cell>> {
+        var changedMaze = maze
+        var newFrontierCells = allFrontierCells
+
+        val frontierCell = newFrontierCells.shuffled().first()
+
+        val listOfNeighborCells = frontierCell.getNeighborCells(changedMaze)
+
+        if (listOfNeighborCells.isNotEmpty()) {
+            changedMaze = changedMaze.swap(frontierCell.position, Free)
+
+            var (neighborCell, direction) = listOfNeighborCells.shuffled().first()
+            changedMaze = neighborCell.freeAdjacentWall(changedMaze, direction)
+
+            newFrontierCells = newFrontierCells.plus(frontierCell.getFrontierCells(changedMaze))
+            newFrontierCells = cullFrontierCells(newFrontierCells, changedMaze)
+        }
+
+        newFrontierCells = newFrontierCells.minus(frontierCell)
+
+        return Pair(changedMaze, newFrontierCells)
     }
 
     private fun initializeMaze(numRows: Int, numCols: Int): Maze {
@@ -63,6 +57,21 @@ class MazeGenerator {
             val mazeCell = maze.get(frontierCell.position)
             mazeCell.isNotFree()
         }
+    }
+
+    private fun Cell.freeAdjacentWall(maze: Maze, direction: String): Maze{
+        var changedMaze = maze
+
+        var (x, y) = position
+        when (direction) {
+            "top" -> y++
+            "right" -> x--
+            "bottom" -> y--
+            "left" -> x++
+        }
+        changedMaze = changedMaze.swap(Position(x,y), Free)
+
+        return changedMaze
     }
 
     private fun Cell.getNeighborCells(maze: Maze): List<Pair<Cell, String>> {
@@ -116,45 +125,69 @@ class MazeGenerator {
         return frontierCells
     }
 
-    private fun selectStartAndEndCells(numRows: Int, numCols: Int): Pair<Cell, String> {
+    private fun selectStartAndEndCells(numRows: Int, numCols: Int): Pair<Cell, Cell> {
         val startSide = (1..4).shuffled().first()
 
-        val (startX, startY, startDirection) = when (startSide) {
+        val (startCell, endCell) = when (startSide) {
+            // Top
             1 -> {
                 val startY = 0
                 val startX = random(numRows)
 
-                val startDirection = "down"
-                Triple(startX, startY, startDirection)
+                val endY = numCols - 1
+                val endX = random(numRows)
+
+                val startCell = Cell(Position(startX, startY), Start)
+                val endCell = Cell(Position(endX, endY), End)
+
+                Pair(startCell, endCell)
             }
+            // Right
             2 -> {
                 val startY = random(numCols)
                 val startX = numRows - 1
 
-                val startDirection = "left"
-                Triple(startX, startY, startDirection)
+                val endY = random(numCols)
+                val endX = 0
+
+                val startCell = Cell(Position(startX, startY), Start)
+                val endCell = Cell(Position(endX, endY), End)
+
+                Pair(startCell, endCell)
             }
+            // Bottom
             3 -> {
                 val startY = numCols - 1
                 val startX = random(numRows)
 
-                val startDirection = "up"
-                Triple(startX, startY, startDirection)
+                val endY = 0
+                val endX = random(numRows)
+
+                val startCell = Cell(Position(startX, startY), Start)
+                val endCell = Cell(Position(endX, endY), End)
+
+                Pair(startCell, endCell)
             }
+            // Left
             4 -> {
                 val startY = random(numCols)
                 val startX = 0
 
-                val startDirection = "right"
-                Triple(startX, startY, startDirection)
+                val endY = random(numCols)
+                val endX = numRows - 1
+
+                val startCell = Cell(Position(startX, startY), Start)
+                val endCell = Cell(Position(endX, endY), End)
+
+                Pair(startCell, endCell)
             }
             else -> throw IllegalStateException()
         }
 
-        return Pair(Cell(Position(startX, startY), Start), startDirection)
+        return Pair(startCell, endCell)
     }
 
     data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
 
-    private fun random(numRows: Int) = (1..numRows - 2).shuffled().first() % 2
+    private fun random(numRows: Int) = (1..numRows - 2).shuffled().first()
 }

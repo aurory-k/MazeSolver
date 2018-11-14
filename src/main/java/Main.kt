@@ -5,29 +5,28 @@ import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-
-const val NUM_ROWS = 9
-const val NUM_COLS = 9
-const val CELL_SIZE = 100
+const val NUM_ROWS = 81
+const val NUM_COLS = 81
+const val CELL_SIZE = 10
 
 fun main(args: Array<String>) {
     val mazeGenerator = MazeGenerator()
-    val (maze, start, end, startDirection) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
+    val (maze, start, end) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
 
-    val crawler = Crawler(start.position, maze, startDirection, listOf())
-    val crawledPositions = crawler.crawl()
-    var crawledMaze = maze
+    //val crawler = Crawler(start.position, maze, startDirection, listOf())
+    //val crawledPositions = crawler.crawl()
+    //var crawledMaze = maze
 
-    crawledPositions.forEach { position ->
-        crawledMaze = maze.swap(position, Visited)
-    }
+//    crawledPositions.forEach { position ->
+//        crawledMaze = maze.swap(position, Visited)
+//    }
 
     val frame = JFrame()
     frame.isUndecorated = true
     frame.isVisible = true
     frame.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
 
-    val canvas = Canvas(crawledMaze)
+    val canvas = Canvas(maze)
     canvas.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
 
     frame.contentPane.add(canvas)
