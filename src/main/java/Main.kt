@@ -5,13 +5,24 @@ import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-const val NUM_ROWS = 81
-const val NUM_COLS = 81
-const val CELL_SIZE = 10
+const val NUM_ROWS = 100
+const val NUM_COLS = 100
+const val CELL_SIZE = 5
 
 fun main(args: Array<String>) {
+
+    val frame = JFrame()
+    frame.isUndecorated = true
+    frame.isVisible = true
+    frame.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
+
+    val canvas = Canvas()
+    canvas.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
+
+    frame.contentPane.add(canvas)
+
     val mazeGenerator = MazeGenerator()
-    val (maze, start, end) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS)
+    val (maze, start, end) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS, canvas)
 
     //val crawler = Crawler(start.position, maze, startDirection, listOf())
     //val crawledPositions = crawler.crawl()
@@ -20,19 +31,13 @@ fun main(args: Array<String>) {
 //    crawledPositions.forEach { position ->
 //        crawledMaze = maze.swap(position, Visited)
 //    }
-
-    val frame = JFrame()
-    frame.isUndecorated = true
-    frame.isVisible = true
-    frame.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
-
-    val canvas = Canvas(maze)
-    canvas.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
-
-    frame.contentPane.add(canvas)
 }
 
-class Canvas(private val maze: Maze) : JPanel() {
+class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel() {
+
+    fun updateMaze(newMaze: Maze){
+        maze = newMaze
+    }
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
