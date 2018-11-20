@@ -1,13 +1,14 @@
 import CellType.*
+import io.reactivex.processors.BehaviorProcessor
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-const val NUM_ROWS = 100
-const val NUM_COLS = 100
-const val CELL_SIZE = 5
+const val NUM_ROWS = 500
+const val NUM_COLS = 500
+const val CELL_SIZE = 2
 
 fun main(args: Array<String>) {
 
@@ -21,8 +22,10 @@ fun main(args: Array<String>) {
 
     frame.contentPane.add(canvas)
 
-    val mazeGenerator = MazeGenerator()
-    val (maze, start, end) = mazeGenerator.generateMaze(NUM_ROWS, NUM_COLS, canvas)
+    val (maze, start, end) = MazeGenerator.generateMaze(NUM_ROWS, NUM_COLS) { maze ->
+        canvas.updateMaze(maze)
+        canvas.repaint()
+    }
 
     //val crawler = Crawler(start.position, maze, startDirection, listOf())
     //val crawledPositions = crawler.crawl()
@@ -35,7 +38,7 @@ fun main(args: Array<String>) {
 
 class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel() {
 
-    fun updateMaze(newMaze: Maze){
+    fun updateMaze(newMaze: Maze) {
         maze = newMaze
     }
 

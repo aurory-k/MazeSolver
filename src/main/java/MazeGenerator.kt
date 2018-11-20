@@ -1,7 +1,7 @@
 import CellType.*
 
-class MazeGenerator {
-    fun generateMaze(numRows: Int, numCols: Int, canvas: Canvas): Triple<Maze, Cell, Cell> {
+object MazeGenerator {
+    fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Triple<Maze, Cell, Cell> {
         var maze = initializeMaze(numRows, numCols)
 
         val (startCell, endCell) = selectStartAndEndCells(numRows, numCols)
@@ -10,12 +10,11 @@ class MazeGenerator {
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-            Thread.sleep(5)
+//            Thread.sleep(5)
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
-            canvas.updateMaze(maze)
-            canvas.repaint()
+            draw(maze)
         }
 
         maze = maze.swap(endCell)
@@ -62,7 +61,7 @@ class MazeGenerator {
         }
     }
 
-    private fun Cell.freeAdjacentWall(maze: Maze, direction: String): Maze{
+    private fun Cell.freeAdjacentWall(maze: Maze, direction: String): Maze {
         var changedMaze = maze
 
         var (x, y) = position
@@ -72,7 +71,7 @@ class MazeGenerator {
             "bottom" -> y--
             "left" -> x++
         }
-        changedMaze = changedMaze.swap(Position(x,y), Free)
+        changedMaze = changedMaze.swap(Position(x, y), Free)
 
         return changedMaze
     }
