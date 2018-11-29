@@ -10,7 +10,7 @@ object MazeGenerator {
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-//            Thread.sleep(5)
+//            Thread.sleep(100)
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
@@ -36,13 +36,25 @@ object MazeGenerator {
             var (neighborCell, direction) = listOfNeighborCells.shuffled().first()
             changedMaze = neighborCell.freeAdjacentWall(changedMaze, direction)
 
-            newFrontierCells = newFrontierCells.plus(frontierCell.getFrontierCells(changedMaze))
+            val retrievedFrontierCells = frontierCell.getFrontierCells(changedMaze)
+            newFrontierCells = newFrontierCells.plus(retrievedFrontierCells)
             newFrontierCells = cullFrontierCells(newFrontierCells, changedMaze)
+
+            changedMaze = updateMazeWithFrontierCells(changedMaze, retrievedFrontierCells)
         }
 
         newFrontierCells = newFrontierCells.minus(frontierCell)
 
         return Pair(changedMaze, newFrontierCells)
+    }
+
+    private fun updateMazeWithFrontierCells(maze: Maze, listOfFrontierCells: List<Cell>): Maze {
+        var changedMaze = maze
+        listOfFrontierCells.forEach {
+            changedMaze = maze.swap(it)
+        }
+
+        return changedMaze
     }
 
     private fun initializeMaze(numRows: Int, numCols: Int): Maze {
@@ -105,22 +117,28 @@ object MazeGenerator {
 
     private fun Cell.getFrontierCells(maze: Maze): List<Cell> {
         val (px, py) = position
-        val topCell = maze.get(px, py - 2)
-        val rightCell = maze.get(px + 2, py)
-        val bottomCell = maze.get(px, py + 2)
-        val leftCell = maze.get(px - 2, py)
+        var topCell = maze.get(px, py - 2)
+        var rightCell = maze.get(px + 2, py)
+        var bottomCell = maze.get(px, py + 2)
+        var leftCell = maze.get(px - 2, py)
 
         val frontierCells = ArrayList<Cell>()
         if (topCell.isNotFree()) {
+            topCell = topCell.copy(type = CellType.Frontier)
             frontierCells.add(topCell)
         }
         if (rightCell.isNotFree()) {
+            rightCell = rightCell.copy(type = CellType.Frontier)
+
             frontierCells.add(rightCell)
         }
         if (bottomCell.isNotFree()) {
+            bottomCell = bottomCell.copy(type = CellType.Frontier)
+
             frontierCells.add(bottomCell)
         }
         if (leftCell.isNotFree()) {
+            leftCell = leftCell.copy(type = CellType.Frontier)
             frontierCells.add(leftCell)
         }
 

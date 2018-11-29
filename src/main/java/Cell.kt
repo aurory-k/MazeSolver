@@ -3,8 +3,10 @@ sealed class CellType {
     object Wall : CellType()
     object Start : CellType()
     object End : CellType()
-    object Boundary : CellType()
+    object Frontier : CellType()
     object Visited : CellType()
+
+    object Boundary : CellType()
 
     override fun toString(): String {
         return when (this) {
@@ -12,6 +14,7 @@ sealed class CellType {
             is Wall -> "*"
             is Start -> "S"
             is End -> "E"
+            is Frontier -> "F"
             is Visited -> "X"
             is Boundary -> "#"
         }

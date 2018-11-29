@@ -12,7 +12,7 @@ const val CELL_SIZE = 2
 
 fun main(args: Array<String>) {
 
-    val frame = JFrame()
+    val frame = JFrame("Maze Solver")
     frame.isUndecorated = true
     frame.isVisible = true
     frame.setSize(NUM_ROWS * CELL_SIZE, NUM_COLS * CELL_SIZE)
@@ -55,6 +55,7 @@ class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel(
                     Wall -> g2.color = Color.BLACK
                     Start -> g2.color = Color.GREEN
                     End -> g2.color = Color.RED
+                    Frontier -> g2.color = Color.MAGENTA
                     Visited -> g2.color = Color.BLUE
                     else -> g2.color = Color.BLACK
                 }
