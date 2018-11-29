@@ -6,9 +6,13 @@ import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-const val NUM_ROWS = 500
-const val NUM_COLS = 500
-const val CELL_SIZE = 2
+//729
+//243
+//81
+//27
+const val NUM_ROWS = 243
+const val NUM_COLS = 243
+const val CELL_SIZE = 4
 
 fun main(args: Array<String>) {
 

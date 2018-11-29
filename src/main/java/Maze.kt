@@ -1,6 +1,8 @@
 import CellType.*
 
 class Maze(private val mazeArray: Array<Array<Cell>>) {
+    lateinit var start: Cell
+    lateinit var end: Cell
     companion object {
         fun generateMazeFromString(mazeString: String): Maze {
             val maze = mazeString.split("\n").mapIndexed { rowNumber, row ->

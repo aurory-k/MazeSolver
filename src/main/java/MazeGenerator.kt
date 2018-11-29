@@ -2,9 +2,7 @@ import CellType.*
 
 object MazeGenerator {
     fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Triple<Maze, Cell, Cell> {
-        var maze = initializeMaze(numRows, numCols)
-
-        val (startCell, endCell) = selectStartAndEndCells(numRows, numCols)
+        var (maze, startCell, endCell) = initializeMaze(numRows, numCols)
         maze = maze.swap(startCell)
 
         var allFrontierCells = startCell.getFrontierCells(maze)
@@ -18,6 +16,7 @@ object MazeGenerator {
         }
 
         maze = maze.swap(endCell)
+        draw(maze)
 
         return Triple(maze, startCell, endCell)
     }
@@ -57,13 +56,16 @@ object MazeGenerator {
         return changedMaze
     }
 
-    private fun initializeMaze(numRows: Int, numCols: Int): Maze {
+    private fun initializeMaze(numRows: Int, numCols: Int): Triple<Maze, Cell, Cell> {
         val wallMaze = Array(numCols) { y ->
             Array(numRows) { x ->
                 Cell(Position(x, y), Wall)
             }
         }
-        return Maze(wallMaze)
+
+        val (startCell, endCell) = selectStartAndEndCells(numRows, numCols)
+
+        return Triple(Maze(wallMaze), startCell, endCell)
     }
 
     private fun cullFrontierCells(listOfFrontierCells: List<Cell>, maze: Maze): List<Cell> {
@@ -209,5 +211,5 @@ object MazeGenerator {
 
     data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
 
-    private fun random(numRows: Int) = (1..numRows - 2).shuffled().first()
+    private fun random(num: Int) = (1 until num/2).shuffled().first() * 2
 }
