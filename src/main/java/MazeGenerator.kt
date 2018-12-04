@@ -8,7 +8,7 @@ object MazeGenerator {
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-//            Thread.sleep(100)
+//            Thread.sleep(10)
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
@@ -30,7 +30,8 @@ object MazeGenerator {
         val listOfNeighborCells = frontierCell.getNeighborCells(changedMaze)
 
         if (listOfNeighborCells.isNotEmpty()) {
-            changedMaze = changedMaze.swap(frontierCell.position, Free)
+            val distanceToEndCell = calculateDistanceToEndOfMaze(frontierCell.position.x, frontierCell.position.y, changedMaze.end)
+            changedMaze = changedMaze.swap(frontierCell.position, distanceToEndCell, Free)
 
             var (neighborCell, direction) = listOfNeighborCells.shuffled().first()
             changedMaze = neighborCell.freeAdjacentWall(changedMaze, direction)
@@ -59,13 +60,14 @@ object MazeGenerator {
     private fun initializeMaze(numRows: Int, numCols: Int): Triple<Maze, Cell, Cell> {
         val wallMaze = Array(numCols) { y ->
             Array(numRows) { x ->
-                Cell(Position(x, y), Wall)
+                Cell(Position(x, y), (Double.MAX_VALUE * 100.0) / 100.0, Wall)
             }
         }
 
         val (startCell, endCell) = selectStartAndEndCells(numRows, numCols)
+        val maze = Maze(wallMaze, startCell, endCell)
 
-        return Triple(Maze(wallMaze), startCell, endCell)
+        return Triple(maze, startCell, endCell)
     }
 
     private fun cullFrontierCells(listOfFrontierCells: List<Cell>, maze: Maze): List<Cell> {
@@ -85,7 +87,9 @@ object MazeGenerator {
             "bottom" -> y--
             "left" -> x++
         }
-        changedMaze = changedMaze.swap(Position(x, y), Free)
+
+        val distanceToEndCell = calculateDistanceToEndOfMaze(x,y, maze.end)
+        changedMaze = changedMaze.swap(Position(x, y), distanceToEndCell, Free)
 
         return changedMaze
     }
@@ -159,8 +163,11 @@ object MazeGenerator {
                 val endY = numCols - 1
                 val endX = random(numRows)
 
-                val startCell = Cell(Position(startX, startY), Start)
-                val endCell = Cell(Position(endX, endY), End)
+
+                val endCell = Cell(Position(endX, endY), 0.0, End)
+
+                val distanceToEndCell = calculateDistanceToEndOfMaze(startX, startY, endCell)
+                val startCell = Cell(Position(startX, startY), distanceToEndCell, Start)
 
                 Pair(startCell, endCell)
             }
@@ -172,8 +179,11 @@ object MazeGenerator {
                 val endY = random(numCols)
                 val endX = 0
 
-                val startCell = Cell(Position(startX, startY), Start)
-                val endCell = Cell(Position(endX, endY), End)
+
+                val endCell = Cell(Position(endX, endY), 0.0, End)
+
+                val distanceToEndCell = calculateDistanceToEndOfMaze(startX, startY, endCell)
+                val startCell = Cell(Position(startX, startY), distanceToEndCell, Start)
 
                 Pair(startCell, endCell)
             }
@@ -185,8 +195,11 @@ object MazeGenerator {
                 val endY = 0
                 val endX = random(numRows)
 
-                val startCell = Cell(Position(startX, startY), Start)
-                val endCell = Cell(Position(endX, endY), End)
+
+                val endCell = Cell(Position(endX, endY), 0.0, End)
+
+                val distanceToEndCell = calculateDistanceToEndOfMaze(startX, startY, endCell)
+                val startCell = Cell(Position(startX, startY), distanceToEndCell, Start)
 
                 Pair(startCell, endCell)
             }
@@ -198,8 +211,11 @@ object MazeGenerator {
                 val endY = random(numCols)
                 val endX = numRows - 1
 
-                val startCell = Cell(Position(startX, startY), Start)
-                val endCell = Cell(Position(endX, endY), End)
+
+                val endCell = Cell(Position(endX, endY), 0.0, End)
+
+                val distanceToEndCell = calculateDistanceToEndOfMaze(startX, startY, endCell)
+                val startCell = Cell(Position(startX, startY), distanceToEndCell, Start)
 
                 Pair(startCell, endCell)
             }
@@ -209,7 +225,19 @@ object MazeGenerator {
         return Pair(startCell, endCell)
     }
 
+    private fun calculateDistanceToEndOfMaze(x: Int, y: Int, end: Cell): Double {
+        val endx = end.position.x.toDouble()
+        val endy = end.position.y.toDouble()
+
+        return Math.sqrt(Math.pow((endy - y), 2.0) + Math.pow((endx - x), 2.0)).round(2)
+    }
+
+    private fun Double.round(numberOfDecimalPlaces: Int): Double{
+        val modifier = Math.pow(10.0,numberOfDecimalPlaces.toDouble())
+        return (this * modifier) / modifier
+    }
+
     data class Quad<T1, T2, T3, T4>(val v1: T1, val v2: T2, val v3: T3, val v4: T4)
 
-    private fun random(num: Int) = (1 until num/2).shuffled().first() * 2
+    private fun random(num: Int) = (1 until num / 2).shuffled().first() * 2
 }

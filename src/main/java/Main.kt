@@ -1,6 +1,6 @@
 import CellType.*
-import io.reactivex.processors.BehaviorProcessor
 import java.awt.Color
+import java.awt.Font
 import java.awt.Graphics
 import java.awt.Graphics2D
 import javax.swing.JFrame
@@ -10,9 +10,9 @@ import javax.swing.JPanel
 //243
 //81
 //27
-const val NUM_ROWS = 243
-const val NUM_COLS = 243
-const val CELL_SIZE = 4
+const val NUM_ROWS = 27
+const val NUM_COLS = 27
+const val CELL_SIZE = 35
 
 fun main(args: Array<String>) {
 
@@ -53,8 +53,8 @@ class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel(
         g2.color = Color.BLACK
         for (y in 0 until maze.getColSize()) {
             for (x in 0 until maze.getRowSize()) {
-                val type = maze.get(x, y).type
-                when (type) {
+                val cell = maze.get(x, y)
+                when (cell.type) {
                     Free -> g2.color = Color.WHITE
                     Wall -> g2.color = Color.BLACK
                     Start -> g2.color = Color.GREEN
@@ -64,6 +64,9 @@ class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel(
                     else -> g2.color = Color.BLACK
                 }
                 g2.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+                g2.font = (Font("TimesRoman", Font.PLAIN, 12))
+                g2.color = Color.RED
+                g2.drawString("${cell.weight}", (x * CELL_SIZE) + CELL_SIZE/4, ((y + 1) * CELL_SIZE) - CELL_SIZE/4)
             }
         }
     }

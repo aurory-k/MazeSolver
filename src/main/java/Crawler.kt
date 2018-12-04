@@ -23,10 +23,10 @@ class Crawler(
         private var listOfVisitedPositions: List<Position>,
         private var spawnedJunction: Junction? = null
 ) {
-    private var topCell: Cell = Cell(Position(position.x, position.y + 1), Wall)
-    private var rightCell: Cell = Cell(Position(position.x + 1, position.y), Wall)
-    private var bottomCell: Cell = Cell(Position(position.x, position.y - 1), Wall)
-    private var leftCell: Cell = Cell(Position(position.x - 1, position.y), Wall)
+    private var topCell: Cell = Cell(Position(position.x, position.y + 1), 0.0, Wall)
+    private var rightCell: Cell = Cell(Position(position.x + 1, position.y), 0.0, Wall)
+    private var bottomCell: Cell = Cell(Position(position.x, position.y - 1), 0.0, Wall)
+    private var leftCell: Cell = Cell(Position(position.x - 1, position.y), 0.0, Wall)
 
     fun crawl(): List<Position> {
         var listOfJunctions = listOf<Junction?>()
@@ -83,7 +83,7 @@ class Crawler(
             direction = NONE
         }
         listOfVisitedPositions = listOfVisitedPositions.plus(position)
-        return maze.swap(position, Visited)
+        return maze.swap(position, 0.0, Visited)
     }
 
     private fun isJunction(): Boolean {

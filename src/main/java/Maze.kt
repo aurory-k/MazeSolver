@@ -1,18 +1,16 @@
 import CellType.*
 
-class Maze(private val mazeArray: Array<Array<Cell>>) {
-    lateinit var start: Cell
-    lateinit var end: Cell
+class Maze(private val mazeArray: Array<Array<Cell>>, val start: Cell, val end: Cell) {
     companion object {
         fun generateMazeFromString(mazeString: String): Maze {
             val maze = mazeString.split("\n").mapIndexed { rowNumber, row ->
                 row.split("|")
                         .mapIndexed { columnNumber, cell ->
-                            Cell(Position(columnNumber, rowNumber), stringToCellType(cell))
+                            Cell(Position(columnNumber, rowNumber), 0.0, stringToCellType(cell))
                         }.toTypedArray()
             }.toTypedArray()
 
-            return Maze(maze)
+            return Maze(maze, Cell(Position(0,0), 0.0, Start), Cell(Position(0,0), 0.0, End))
         }
 
         private fun stringToCellType(s: String): CellType {
@@ -46,14 +44,14 @@ class Maze(private val mazeArray: Array<Array<Cell>>) {
 
     private fun Array<Array<Cell>>.copy() = map { it.clone() }.toTypedArray()
 
-    fun swap(position: Position, type: CellType): Maze {
+    fun swap(position: Position, weight: Double, type: CellType): Maze {
         val mazeArray = this.mazeArray.copy()
-        mazeArray[position.y][position.x] = Cell(position, type)
-        return Maze(mazeArray)
+        mazeArray[position.y][position.x] = Cell(position, weight, type)
+        return Maze(mazeArray, this.start, this.end)
     }
 
     fun swap(cell: Cell): Maze {
-        return swap(cell.position, cell.type)
+        return swap(cell.position, cell.weight, cell.type)
     }
 
     override fun toString(): String {

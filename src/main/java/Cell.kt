@@ -47,10 +47,10 @@ fun Cell?.orElseBoundary(position: Position): Cell {
     if (this != null) {
         return this
     }
-    return Cell(Position(position.x, position.y), CellType.Boundary)
+    return Cell(Position(position.x, position.y), -1.0, CellType.Boundary)
 }
 
-data class Cell(val position: Position, val type: CellType)
+data class Cell(val position: Position, val weight: Double, val type: CellType)
 
 data class Position(val x: Int, val y: Int)
 
