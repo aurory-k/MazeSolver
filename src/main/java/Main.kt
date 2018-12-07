@@ -31,6 +31,12 @@ fun main(args: Array<String>) {
         canvas.repaint()
     }
 
+    val searcher = AStarSearcher(maze)
+    searcher.solve { maze ->
+        canvas.updateMaze(maze)
+        canvas.repaint()
+    }
+
     //val crawler = Crawler(start.position, maze, startDirection, listOf())
     //val crawledPositions = crawler.crawl()
     //var crawledMaze = maze
@@ -64,9 +70,11 @@ class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel(
                     else -> g2.color = Color.BLACK
                 }
                 g2.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-                g2.font = (Font("TimesRoman", Font.PLAIN, 12))
-                g2.color = Color.RED
-                g2.drawString("${cell.weight}", (x * CELL_SIZE) + CELL_SIZE/4, ((y + 1) * CELL_SIZE) - CELL_SIZE/4)
+                if(cell.type != Wall){
+                    g2.font = (Font("TimesRoman", Font.PLAIN, 12))
+                    g2.color = Color.RED
+                    g2.drawString("${cell.weight}", (x * CELL_SIZE) + CELL_SIZE/4, ((y + 1) * CELL_SIZE) - CELL_SIZE/4)
+                }
             }
         }
     }
