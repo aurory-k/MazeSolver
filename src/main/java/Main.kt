@@ -10,9 +10,9 @@ import javax.swing.JPanel
 //243
 //81
 //27
-const val NUM_ROWS = 27
-const val NUM_COLS = 27
-const val CELL_SIZE = 35
+const val NUM_ROWS = 729
+const val NUM_COLS = 729
+const val CELL_SIZE = 1
 
 fun main(args: Array<String>) {
 
@@ -36,14 +36,6 @@ fun main(args: Array<String>) {
         canvas.updateMaze(maze)
         canvas.repaint()
     }
-
-    //val crawler = Crawler(start.position, maze, startDirection, listOf())
-    //val crawledPositions = crawler.crawl()
-    //var crawledMaze = maze
-
-//    crawledPositions.forEach { position ->
-//        crawledMaze = maze.swap(position, Visited)
-//    }
 }
 
 class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel() {
@@ -67,13 +59,14 @@ class Canvas(private var maze: Maze = Maze.generateMazeFromString("")) : JPanel(
                     End -> g2.color = Color.RED
                     Frontier -> g2.color = Color.MAGENTA
                     Visited -> g2.color = Color.BLUE
+                    Solution -> g2.color = Color.PINK
                     else -> g2.color = Color.BLACK
                 }
                 g2.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-                if(cell.type != Wall){
-                    g2.font = (Font("TimesRoman", Font.PLAIN, 12))
+                if (cell.type != Wall) {
+                    g2.font = (Font("TimesRoman", Font.PLAIN, 5))
                     g2.color = Color.RED
-                    g2.drawString("${cell.weight}", (x * CELL_SIZE) + CELL_SIZE/4, ((y + 1) * CELL_SIZE) - CELL_SIZE/4)
+                    //g2.drawString("${cell.weight}", (x * CELL_SIZE) + CELL_SIZE/4, ((y + 1) * CELL_SIZE) - CELL_SIZE/4)
                 }
             }
         }

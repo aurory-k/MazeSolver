@@ -8,7 +8,7 @@ object MazeGenerator {
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-//            Thread.sleep(10)
+            //Thread.sleep(50)
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
