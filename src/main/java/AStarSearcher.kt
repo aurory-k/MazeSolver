@@ -25,7 +25,7 @@ class AStarSearcher(private var maze: Maze) {
             openList = openList.minus(cellThatSearcherMovedTo)
 
             openList = openList.plus(expandOpenList(position, closedList))
-            //Thread.sleep(100)
+            //Thread.sleep(5)
         }
 
         val solutionList = calculateShortestPath(closedList)

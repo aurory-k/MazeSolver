@@ -1,14 +1,14 @@
 import CellType.*
 
 object MazeGenerator {
-    fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Triple<Maze, Cell, Cell> {
+    fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Maze{
         var (maze, startCell, endCell) = initializeMaze(numRows, numCols)
         maze = maze.swap(startCell)
 
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-            //Thread.sleep(50)
+            //Thread.sleep(10)
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
@@ -18,7 +18,7 @@ object MazeGenerator {
         maze = maze.swap(endCell)
         draw(maze)
 
-        return Triple(maze, startCell, endCell)
+        return maze
     }
 
     private fun processNextMapChange(maze: Maze, allFrontierCells: List<Cell>): Pair<Maze, List<Cell>> {

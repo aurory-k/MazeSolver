@@ -10,9 +10,9 @@ import javax.swing.JPanel
 //243
 //81
 //27
-const val NUM_ROWS = 729
-const val NUM_COLS = 729
-const val CELL_SIZE = 1
+const val NUM_ROWS = 50
+const val NUM_COLS = 50
+const val CELL_SIZE = 20
 
 fun main(args: Array<String>) {
 
@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
 
     frame.contentPane.add(canvas)
 
-    val (maze, start, end) = MazeGenerator.generateMaze(NUM_ROWS, NUM_COLS) { maze ->
+    val maze = MazeGenerator.generateMaze(NUM_ROWS, NUM_COLS) { maze ->
         canvas.updateMaze(maze)
         canvas.repaint()
     }
