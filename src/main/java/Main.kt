@@ -1,4 +1,7 @@
 import CellType.*
+import MazeConfiguration.CELL_SIZE
+import MazeConfiguration.NUM_COLS
+import MazeConfiguration.NUM_ROWS
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics
@@ -6,13 +9,21 @@ import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-//729
-//243
-//81
-//27
-const val NUM_ROWS = 50
-const val NUM_COLS = 50
-const val CELL_SIZE = 20
+object MazeConfiguration {
+    //729
+    //243
+    //81
+    //27
+    const val NUM_ROWS = 100
+    const val NUM_COLS = 100
+    const val CELL_SIZE = 10
+
+    const val SHOW_GENERATION = false
+    const val GENERATION_SLOWDOWN = 5 //Larger means slower; milliseconds
+
+    const val SHOW_SEARCH = true
+    const val SEARCH_SLOWDOWN = 5 //Larger means slower; milliseconds
+}
 
 fun main(args: Array<String>) {
 
@@ -30,6 +41,8 @@ fun main(args: Array<String>) {
         canvas.updateMaze(maze)
         canvas.repaint()
     }
+
+    Thread.sleep(2000)
 
     val searcher = AStarSearcher(maze)
     searcher.solve { maze ->

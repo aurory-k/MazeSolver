@@ -1,14 +1,18 @@
 import CellType.*
+import MazeConfiguration.GENERATION_SLOWDOWN
+import MazeConfiguration.SHOW_GENERATION
 
 object MazeGenerator {
-    fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Maze{
+    fun generateMaze(numRows: Int, numCols: Int, draw: (Maze) -> Unit): Maze {
         var (maze, startCell, endCell) = initializeMaze(numRows, numCols)
         maze = maze.swap(startCell)
 
         var allFrontierCells = startCell.getFrontierCells(maze)
 
         while (allFrontierCells.isNotEmpty()) {
-            //Thread.sleep(10)
+            if(SHOW_GENERATION){
+                Thread.sleep(GENERATION_SLOWDOWN.toLong())
+            }
             val (updatedMaze, updatedFrontierCells) = processNextMapChange(maze, allFrontierCells)
             maze = updatedMaze
             allFrontierCells = updatedFrontierCells
@@ -88,7 +92,7 @@ object MazeGenerator {
             "left" -> x++
         }
 
-        val distanceToEndCell = calculateDistanceToEndOfMaze(x,y, maze.end)
+        val distanceToEndCell = calculateDistanceToEndOfMaze(x, y, maze.end)
         changedMaze = changedMaze.swap(Position(x, y), distanceToEndCell, Free)
 
         return changedMaze
@@ -232,8 +236,8 @@ object MazeGenerator {
         return Math.sqrt(Math.pow((endy - y), 2.0) + Math.pow((endx - x), 2.0)).round(2)
     }
 
-    private fun Double.round(numberOfDecimalPlaces: Int): Double{
-        val modifier = Math.pow(10.0,numberOfDecimalPlaces.toDouble())
+    private fun Double.round(numberOfDecimalPlaces: Int): Double {
+        val modifier = Math.pow(10.0, numberOfDecimalPlaces.toDouble())
         return (this * modifier) / modifier
     }
 

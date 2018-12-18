@@ -1,4 +1,6 @@
 import CellType.*
+import MazeConfiguration.SEARCH_SLOWDOWN
+import MazeConfiguration.SHOW_SEARCH
 import java.util.*
 
 class AStarSearcher(private var maze: Maze) {
@@ -25,7 +27,9 @@ class AStarSearcher(private var maze: Maze) {
             openList = openList.minus(cellThatSearcherMovedTo)
 
             openList = openList.plus(expandOpenList(position, closedList))
-            //Thread.sleep(5)
+            if(SHOW_SEARCH){
+                Thread.sleep(SEARCH_SLOWDOWN.toLong())
+            }
         }
 
         val solutionList = calculateShortestPath(closedList)
